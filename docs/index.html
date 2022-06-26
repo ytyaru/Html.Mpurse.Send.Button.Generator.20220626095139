@@ -111,7 +111,8 @@
 <script src="js/circle-svg-generator.js"></script>
 -->
 <script src="js/party-sparkle-hart.js"></script>
-<script src="js/party-sparkle-monar.js"></script>
+<!--<script src="js/party-sparkle-monar.js"></script>-->
+<script src="js/party-sparkle-image.js"></script>
 <script src="js/main.js"></script>
 </head>
 <body>
@@ -152,11 +153,40 @@
 <button id="party-confetti" type="button">クラッカー</button>
 <button id="party-sparkle-star" type="button">★</button>
 <button id="party-sparkle-hart" type="button">♥</button>
+<!--
 <button id="party-sparkle-monar" type="button"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></button><br>
+-->
+<button id="party-sparkle-img" type="button"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></button><br>
 <label><input type="radio" name="party" value="confetti" checked>クラッカー</label>
 <label><input type="radio" name="party" value="star">★</label>
 <label><input type="radio" name="party" value="hart">♥</label>
-<label><input type="radio" name="party" value="monar"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
+<label><input type="radio" name="party" value="image"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
+<select id="party-img-kind">
+    <option value="coin-mark-black">coin-mark-black<img src="" width="32" height="32"></option>
+    <option value="coin-mark">coin-mark</option>
+    <option value="mark-outline">mark-outline</option>
+    <option value="mark">mark</option>
+    <option value="coin-monar-mouth-red">coin-monar-mouth-red</option>
+    <option value="coin-monar">coin-monar</option>
+    <option value="coin-mini-monar-mouth-red">coin-mini-monar-mouth-red</option>
+    <option value="coin-mini-monar">coin-mini-monar</option>
+    <option value="monar-mark">monar-mark</option>
+    <option value="monar-mark-white">monar-mark-white</option>
+    <option value="monar-mouth-red">monar-mouth-red</option>
+    <option value="monar" selected>monar</option>
+    <option value="monar-no-face">monar-no-face</option>
+    <option value="monar-transparent">monar-transparent</option>
+</select>
+<label><input type="radio" value="png" name="party-img-format">PNG</label>
+<label><input type="radio" value="svg" name="party-img-format" checked>SVG</label>
+<select id="party-img-size">
+    <option value="16">16</option>
+    <option value="32" selected>32</option>
+    <option value="64">64</option>
+    <option value="128">128</option>
+    <option value="256">256</option>
+</select>
+
 
 <!--
 <table>

@@ -15,15 +15,6 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     })
     document.getElementById('party-sparkle-star').addEventListener('click', async(event) => {
         console.debug(party)
-        //party.sparkles(event.target)
-        /*
-        party.sparkles(event.target,{
-            lifetime: party.variation.range(5, 7),
-            count: party.variation.range(80, 100),
-            speed: party.variation.range(100, 700),
-            //size: party.variation.range(1, 3),
-        })
-        */
         party.sparkles(event.target,{
             lifetime: party.variation.range(2, 3),
             count: party.variation.range(30, 40),
@@ -31,14 +22,21 @@ window.addEventListener('DOMContentLoaded', async(event) => {
             //size: party.variation.range(1, 3),
         })
     })
-    //PartySparkleHart.setup(document.getElementById('party-sparkle-hart')) 
     document.getElementById('party-sparkle-hart').addEventListener('click', async(event) => {
         PartySparkleHart.setup(event.target) 
     })
-    document.getElementById('party-sparkle-monar').addEventListener('click', async(event) => {
-        PartySparkleMonar.setup(event.target) 
+    document.getElementById('party-img-kind').addEventListener('change', async(event) => {
+        document.querySelector(`#party-sparkle-img > img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
+        document.querySelector(`input[type=radio][name=party][value=image] + img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
     })
-
+    document.getElementById('party-sparkle-img').addEventListener('click', async(event) => {
+        const kind = document.getElementById('party-img-kind').value
+        const format = document.querySelector(`input[name=party-img-format][checked]`).value
+        const size = document.getElementById('party-img-size').value
+        const url = `./asset/image/monacoin/${format}${('png'==format) ? '/' + ((64 < size) ? 256 : 64) : ''}/${kind}.${format}`
+        console.debug(kind, format, size, url)
+        PartySparkleImage.setup(event.target, {src:url, size:size}) 
+    })
     /*
     //party.resolvableShapes["monar"] = `<img src="./asset/image/monacoin/svg/monar.svg" width="32" height="32"></img>`
     //party.resolvableShapes["monar"] = fetch(`./asset/image/monacoin/svg/monar.svg`).then(res=>res.text().then(txt=>txt))

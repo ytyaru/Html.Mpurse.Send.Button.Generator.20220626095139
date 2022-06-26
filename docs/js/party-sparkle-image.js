@@ -1,15 +1,9 @@
-class PartySparkleMonar {
-    static async setup(runButton) {
-        const res = await fetch(`./asset/image/monacoin/svg/monar.svg`)
-        const svg = await res.text()
-        const shape = document.createElement("span")
-        shape.innerHTML = svg
-        shape.querySelector(`svg`)
-        console.debug(svg)
+class PartySparkleImage {
+    static async setup(runButton, options) {
         const img = document.createElement("img")
-        img.setAttribute('src', `./asset/image/monacoin/svg/monar.svg`)
-        img.setAttribute('width', '32')
-        img.setAttribute('height', '32')
+        img.setAttribute('src', options.src)
+        img.setAttribute('width', options.size)
+        img.setAttribute('height', options.size)
         party.scene.current.createEmitter({
             emitterOptions: {
                 loops: 1,
