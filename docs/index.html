@@ -1,0 +1,404 @@
+<!doctype html>
+<html>
+<head prefix="og: https://ogp.me/ns# article: https://ogp.me/ns/article#">
+<meta charset="utf-8">
+<title>Mpurseを使ったモナコイン送金ボタンを生成する</title>
+<meta name="description" content="コピペ、JS、画像ファイル導入で使える。">
+<meta name="author" content="ytyaru">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">
+<link rel="icon" href="asset/image/avator.png">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/toot-dialog.css">
+<link rel="stylesheet" href="css/transaction.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:type" content="profile" />
+<meta property="og:site_name" content="ytyaru" />
+<meta property="og:title" content="Mpurseを使ったモナコイン送金ボタンを生成する" />
+<meta property="og:description" content="コピペ、JS、画像ファイル導入で使える。" />
+<meta property="og:image" content="https://ytyaru.github.io/Html.Mona.Transaction.Get.20220618094040/asset/image/eye-catch.png" />
+<meta property="article:modified_time" content="2022-06-23T16:05:00+09:00" />
+<meta property="article:published_time" content="2022-06-23T16:00:00+09:00" />
+<meta property="article:author" content="https://ytyaru.github.io/" />
+<meta name="twitter:card" content="summary_large_image" />
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Article",
+    "author": {
+      "@type": "Person",
+      "name": "ytyaru",
+      "url": "https://ytyaru.github.io/",
+      "sameAs": [
+        "https://twitter.com/ytyaru1",
+        "https://github.com/ytyaru",
+        "https://profile.hatena.ne.jp/ytyaru/",
+        "https://mstdn.jp/@ytyaru",
+        "https://pawoo.net/@ytyaru_pawoo",
+        "https://www.pixiv.net/users/53831310",
+        "https://monaledge.com/user/MEHCqJbgiNERCH3bRAtNSSD9uxPViEX1nu",
+        "https://web3.askmona.org/user/1590",
+        "https://misskey.io/@ytyaru",
+        "https://misskey.dev/@ytyaru",
+        "https://sushi.ski/@ytyaru",
+        "https://meisskey.one/@ytyaru",
+      ]
+    },
+    "dateModified": "2022-06-23T16:05:00+09:00",
+    "datePublished": "2022-06-23T16:00:00+09:00",
+    "headline": "Mpurseを使ったモナコイン送金ボタンを生成する",
+    "image": ["https://ytyaru.github.io/Html.Mona.Transaction.Get.20220618094040/asset/image/eye-catch.png"]
+  }
+</script>
+<link rel="webmention" href="https://webmention.io/ytyaru.github.io/webmention" />
+<link rel="pingback" href="https://webmention.io/ytyaru.github.io/xmlrpc" />
+<link rel="me" href="https://twitter.com/ytyaru1">
+<link rel="me" href="https://mstdn.jp/@ytyaru">
+<link rel="me" href="https://pawoo.net/@ytyaru_pawoo">
+<link rel="me" href="https://misskey.io/@ytyaru">
+<link rel="me" href="https://misskey.dev/@ytyaru">
+<link rel="me" href="https://github.com/ytyaru">
+<link rel="me" href="https://profile.hatena.ne.jp/ytyaru/">
+<link rel="me" href="https://ytyaru.hatenablog.com/">
+<link rel="me" href="https://www.pixiv.net/users/53831310">
+<link rel="me" href="https://monaledge.com/user/MEHCqJbgiNERCH3bRAtNSSD9uxPViEX1nu">
+<link rel="me" href="https://web3.askmona.org/user/1590">
+<link rel="me" href="https://misskey.io/@ytyaru">
+<link rel="me" href="https://misskey.dev/@ytyaru">
+<link rel="me" href="https://sushi.ski/@ytyaru">
+<link rel="me" href="https://meisskey.one/@ytyaru">
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script src="./lib/tingle/0.16.0/tingle.js"></script>
+<link rel="stylesheet" href="./lib/tingle/0.16.0/tingle.css">
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">-->
+<link rel="stylesheet" type="text/css" href="./lib/toastify/1.11.2/min.css">
+<!--<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>-->
+<script type="text/javascript" src="./lib/toastify/1.11.2/min.js"></script>
+<script src="js/toaster.js"></script>
+<script src="lib/party/party.min.js"></script>
+<script src="js/rest-client.js"></script>
+<script src="js/misskey-rest-client.js"></script>
+<script src="js/misskey-instance.js"></script>
+<script src="js/misskey-authorizer.js"></script>
+<script src="js/misskey-authorizer-oauth.js"></script>
+<script src="js/misskey-authorizer-miauth.js"></script>
+<script src="js/misskey-api-client.js"></script>
+<script src="js/misskey-note-button.js"></script>
+<script src="js/misskey-note-dialog.js"></script>
+<script src="js/webmention-requester.js"></script>
+<script src="js/mastodon-rest-client.js"></script>
+<script src="js/mastodon-authorizer.js"></script>
+<script src="js/mastodon-api-client.js"></script>
+<script src="js/toot-button.js"></script>
+<script src="js/toot-dialog.js"></script>
+<script src="js/comment.js"></script>
+<script src="js/tweet-button.js"></script>
+<script src="js/mention-section.js"></script>
+<script src="js/mpurse-send-button.js"></script>
+<script src="js/mastodon-instance.js"></script>
+<script src="js/mastodon-profile-generator.js"></script>
+<script src="js/misskey-profile-generator.js"></script>
+<script src="js/mastodon-redirect-callback-reciver.js"></script>
+<script src="js/misskey-redirect-callback-reciver.js"></script>
+
+<!--
+<script src="js/profile-register.js"></script>
+<script src="js/google-apps-script-client.js"></script>
+<script src="js/profile-generator.js"></script>
+<script src="js/mona-transaction-client.js"></script>
+<script src="js/mona-transaction-viewer.js"></script>
+<script src="js/circle-svg-generator.js"></script>
+-->
+<script src="js/party-sparkle-hart.js"></script>
+<script src="js/party-sparkle-monar.js"></script>
+<script src="js/main.js"></script>
+</head>
+<body>
+<h1>Mpurseを使ったモナコイン送金ボタンを生成する</h1>
+<details><summary>使い方</summary>
+<ol>
+<li><a href="https://ytyaru.github.io/Html.Mpurse.Api.20220517160403/setup.html">mpurseで口座を作る</a></li>
+<li><a href="https://ytyaru.github.io/Html.Mpurse.Api.20220517160403/setup.html#login">ブラウザの拡張機能でmpurseをクリックしてパスワードを入れて承認します</a></li>
+<li>あなたのアドレスが出力される</li>
+<li>もしアドレスが出なければmpurseを承認後、<kbd>F5</kbd>キーを押してリロードする</li>
+<li><kbd>ダウンロード</kbd>ボタンを押す</li>
+<li>ZIPを解凍したファイル一式を自分のサイトにアップロードする</li>
+<li>あなたのWEBサイトに、あなた宛の投げモナボタンが表示される</li>
+</ol>
+<p></p>
+</details>
+<form>
+<fieldset><legend>設定</legend>
+<table>
+<tr><th>アドレス</th><td><button id="get-address" type="button">取得する</button><input id="to" type="text"></td></tr>
+<tr><th>金額</th><td>
+<input id="amount" type="number" value="0.11411400" min="0.00000001" step="0.00000001" placeholder="0.114" >
+<input id="asset" type="text" value="MONA" list="datalist-asset" placeholder="MONA" >
+<datalist id="datalist-asset">
+    <option value="MONA">
+    <option value="XMP">
+</datalist>
+</td></tr>
+<tr><th>メモ</th><td><input id="memo" value="" placeholder="Good job!"></td></tr>
+<tr><th>完了</th><td>
+<input id="ok-msg" value="投げモナしました！\nありがとうございます！（ ´∀｀）" placeholder="成功時に実行するコード">
+</td></tr>
+<tr><th>中止</th><td>
+<input id="ng-msg" value="キャンセルしました(´・ω・｀)"  placeholder="成功時に実行するコード">
+</td></tr>
+<tr><th>クラッカー</th><td>
+<span>送金完了後のアニメーション</span><br>
+<button id="party-confetti" type="button">クラッカー</button>
+<button id="party-sparkle-star" type="button">★</button>
+<button id="party-sparkle-hart" type="button">♥</button>
+<button id="party-sparkle-monar" type="button"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></button><br>
+<label><input type="radio" name="party" value="confetti" checked>クラッカー</label>
+<label><input type="radio" name="party" value="star">★</label>
+<label><input type="radio" name="party" value="hart">♥</label>
+<label><input type="radio" name="party" value="monar"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
+
+<!--
+<table>
+<tr><th>lifetime</th><td><input id="party-lifetime-min" type="number" value="5" placeholder="表示する最小時間(秒)"><input id="party-lifetime-step" type="number" min="0" value="2" placeholder="表示する増分範囲時間(秒)"></td></tr>
+<tr><th></th><td></td></tr>
+<tr><th></th><td></td></tr>
+<tr><th></th><td></td></tr>
+</table>
+-->
+</td></tr>
+<tr><th>画像</th><td>
+<fieldset><legend>形式</legend>
+<label><input type="radio" value="png" name="img-format">PNG</label>
+<label><input type="radio" value="svg" name="img-format">SVG</label>
+<label title="SVGで表示しPNGをフォールバックにする"><input type="radio" value="svg_png" name="img-format" checked>SVG+PNG</label>
+</fieldset>
+<fieldset><legend>デフォルト</legend>
+<input id="img-src" value="" type="text" placeholder="自サイトに配置した画像URL" style="vertical-align:middle;">
+<select id="img-kind">
+    <option value="coin-mark-black">coin-mark-black<img src="" width="32" height="32"></option>
+    <option value="coin-mark">coin-mark</option>
+    <option value="mark-outline">mark-outline</option>
+    <option value="mark">mark</option>
+    <option value="coin-monar-mouth-red">coin-monar-mouth-red</option>
+    <option value="coin-monar">coin-monar</option>
+    <option value="coin-mini-monar-mouth-red">coin-mini-monar-mouth-red</option>
+    <option value="coin-mini-monar">coin-mini-monar</option>
+    <option value="monar-mark">monar-mark</option>
+    <option value="monar-mark-white">monar-mark-white</option>
+    <option value="monar-mouth-red">monar-mouth-red</option>
+    <option value="monar">monar</option>
+    <option value="monar-no-face">monar-no-face</option>
+    <option value="monar-transparent">monar-transparent</option>
+</select>
+<input id="img-size" type="number" value="64" min="1" step="1" placeholder="表示する画像サイズ" list="datalist-img-size" >
+<datalist id="datalist-img-size">
+    <option value="16">
+    <option value="32">
+    <option value="64">
+    <option value="128">
+    <option value="256">
+</datalist>
+
+</fieldset>
+<fieldset><legend>内蔵</legend>
+<select id="img-file-sizes">
+    <option value="64">64</option>
+    <option value="256">256</option>
+    <option value="64,256" selected>64,256</option>
+</select>
+<!--
+<label><input type="checkbox" name="img-files" value="coin-mark-black">coin-mark-black<img src="./asset/image/monacoin/png/64/coin-mark-black.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="coin-mark">coin-mark<img src="./asset/image/monacoin/png/64/coin-mark.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="mark">mark<img src="./asset/image/monacoin/png/64/mark.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="coin-monar-mouth-red">coin-monar-mouth-red<img src="./asset/image/monacoin/png/64/coin-monar-mouth-red.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="coin-monar">coin-monar<img src="./asset/image/monacoin/png/64/coin-monar.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="coin-mini-monar-mouth-red">coin-mini-monar-mouth-red<img src="./asset/image/monacoin/png/64/coin-mini-monar-mouth-red.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="coin-mini-monar">coin-mini-monar<img src="./asset/image/monacoin/png/64/coin-mini-monar.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-mark">monar-mark<img src="./asset/image/monacoin/png/64/monar-mark.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-mark-white">monar-mark-white<img src="./asset/image/monacoin/png/64/monar-mark-white.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-mouth-red">monar-mouth-red<img src="./asset/image/monacoin/png/64/monar-mouth-red.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar">monar<img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-no-face">monar-no-face<img src="./asset/image/monacoin/png/64/monar-no-face.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-transparent">monar-transparent<img src="./asset/image/monacoin/png/64/monar-transparent.png" width="32" heigth="32"></label>
+-->
+<label><input type="checkbox" name="img-files" value="coin-mark-black" checked><img src="./asset/image/monacoin/png/64/coin-mark-black.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="coin-mark" checked><img src="./asset/image/monacoin/png/64/coin-mark.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="mark" checked><img src="./asset/image/monacoin/png/64/mark.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="coin-monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/coin-monar-mouth-red.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="coin-monar" checked><img src="./asset/image/monacoin/png/64/coin-monar.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="coin-mini-monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/coin-mini-monar-mouth-red.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="coin-mini-monar" checked><img src="./asset/image/monacoin/png/64/coin-mini-monar.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-mark" checked><img src="./asset/image/monacoin/png/64/monar-mark.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-mark-white" checked><img src="./asset/image/monacoin/png/64/monar-mark-white.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/monar-mouth-red.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar" checked><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-no-face" checked><img src="./asset/image/monacoin/png/64/monar-no-face.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-transparent" checked><img src="./asset/image/monacoin/png/64/monar-transparent.png" width="32" heigth="32"></label>
+</fieldset>
+</td></tr>
+<tr><th>title</th><td>
+<input id="title" value="投げモナする" type="text" placeholder="title属性値">
+</td></tr>
+<tr><th>alt</th><td>
+<input id="alt" value="投げモナする" type="text" placeholder="alt属性値">
+</td></tr>
+<!--
+<table>
+<tr><th>title</th><td><input id="title" value="投げモナする" type="text" placeholder="title属性値"></input></td></tr>
+<tr><th>alt</th><td><input id="alt" value="投げモナする" type="text" placeholder="alt属性値"></input></td></tr>
+</table>
+-->
+<!--
+<img id="img-src-img" src="" width="32" height="32" title="coin-mark">
+<label><input id="img-src" name="base64" type="checkbox"></input>埋め込み（Base64）</label>
+<label><input id="img-src" name="base64-coin-mark" type="checkbox"></input></label>
+-->
+<!--
+<table>
+<tr><th><img id="coin-mark-img" src="" width="32" height="32" title="coin-mark"></th><th><img id="coin-monar-img" src="" width="32" height="32" title="coin-monar"></th><th><img id="monar-mark-img" src="" width="32" height="32" title="monar-mark"></th></tr>
+<tr><td><label><input name="img" id="coin-mark-64" type="radio"></input>coin-mark-64</label></td><td><label><input name="img" id="coin-monar-64" type="radio" checked></input>coin-monar-64</label></td><td><label><input name="img" id="monar-mark-64" type="radio"></input>monar-mark-64</label></td></tr>
+<tr><td><label><input name="img" id="coin-mark-256" type="radio"></input>coin-mark-256</label></td><td><label><input name="img" id="coin-monar-256" type="radio"></input>coin-monar-256</label></td><td><label><input name="img" id="monar-mark-256" type="radio"></input>monar-mark-256</label></td></tr>
+</table>
+<select id="img-size">
+    <option value="16">16</option>
+    <option value="32">32</option>
+    <option value="64" selected>64</option>
+    <option value="128">128</option>
+    <option value="256">256</option>
+</select>
+<input id="title" value="投げモナする" type="text" placeholder="title属性値"></input>
+</td></tr>
+</td></tr>
+-->
+</table>
+</fieldset>
+</form>
+
+<table>
+<tr><th>結果</th><th>コード</th><th>コピー</th><th>ZIP</th></tr>
+<td id="export"></td><td><textarea id="export-code" width="40" height="10"></textarea></td><td><button id="copy-to-clipboard" type="button">コピー</button></td><td id="export-download-zip"><button id="download-zip" type="button">ダウンロード</button></td></tr>
+</table>
+
+<details><summary>過去バージョン</summary>
+<ul>
+<li><a href="https://ytyaru.github.io/MonaCoin.Icon.20220521092535/">モナコインのアイコンを作った</a></li>
+<li><a href="https://ytyaru.github.io/Html.MonaCoin.Button.Generator.20220519194201/">投げモナボタンジェネレータ</a></li>
+<li><a href="https://ytyaru.github.io/Html.MonaCoin.Button.Component.Generator.20220526192239/">投げモナボタンジェネレータ（WebComponent版）</a></li>
+<li><a href="https://ytyaru.github.io/Html.MonaCoin.Button.Component.Generator.Animation.20220531091850/">投げモナボタンジェネレータ（WebComponent版）＋アニメ</a></li>
+<li><a href="https://ytyaru.github.io/Html.MonaCoin.Button.Component.Generator.Slim.20220531090526/">投げモナボタンジェネレータ（WebComponent版）＋アニメ＋コード減量</a></li>
+</ul>
+</details>
+
+<button id="party-confetti-simple" type="button">クラッカーを鳴らす（デフォルト）</button>
+<button id="party-confetti-custom" type="button">クラッカーを鳴らす（カスタム）</button>
+<p>投げモナボタンで送金したあとにクラッカーを鳴らすようにした。</p>
+<mpurse-send-button to="MEHCqJbgiNERCH3bRAtNSSD9uxPViEX1nu" img="coin-monar"></mpurse-send-button>
+
+<h2>投げモナボタンのバグ修正</h2>
+<p>クリックしてもMpurseが起動しないことがあった。原因は<code>click</code>と<code>pointerdown</code>の２種類のイベントを使っていたからだと思われる。<code>pointerdown</code>に統一したら解決したっぽい。30回クリックして全部Mpurseが起動したのを確認した。</p>
+
+<h2>使用ライブラリ</h2>
+<a href="https://party.js.org/">party.js</a>
+
+<!--
+<svg width="240" height="240">
+  <style>.clip-96{clip-path: circle(96px at 50% 50%);}.clip-64{clip-path: circle(64px at 50% 50%);}</style>
+  <rect x="0" y="0" width="240" height="240" style="fill:green" />
+  <defs>
+    <style type="text/css"><![CDATA[
+      image { clip-path: circle(50px at center); }
+    ]]></style>
+  </defs>
+  <a href="https://ytyaru.github.io/"><image href="./asset/image/avator.png" width="96" height="96" x="72" y="72" /></a>
+  <a href=""><image href="./asset/image/user/kkrn_icon_user_3_resize_min.svg" width="64" height="64" x="88" y="8" /></a>
+  <a href=""><image href="./asset/image/user/kkrn_icon_user_3_resize_min.svg" width="64" height="64" x="168" y="88" /></a>
+  <a href=""><image href="./asset/image/user/kkrn_icon_user_3_resize_min.svg" width="64" height="64" x="88" y="168" /></a>
+  <a href=""><image href="./asset/image/user/kkrn_icon_user_3_resize_min.svg" width="64" height="64" x="8" y="88" /></a>
+</svg>
+-->
+<!--
+<input id="address" value="" placeholder="モナコインのアドレス">
+<button id="get-transaction" type="button">取引情報を取得する</button>
+<textarea id="response" value="" placeholder="取引情報JSON"></textarea>
+<div id="export-transaction"></div>
+-->
+
+<!--
+<h1><a href="https://ytyaru.github.io/Html.Mpurse.Api.20220517160403/setup.html" target="_blank" rel="noopener noreferrer">mpurse</a>のアドレスとプロフィールを登録する</h1>
+-->
+<!--
+<details><summary>使い方</summary>
+<ol>
+<li><a href="https://ytyaru.github.io/Html.Mpurse.Api.20220517160403/setup.html" target="_blank" rel="noopener noreferrer">mpurseのアドレスを作成する</a></li>
+<li>このページで名前などを入力する</li>
+<li><kbd>登録する</kbd>ボタンを押す</li>
+<li>「登録しました！」と表示される</li>
+</ol>
+<p>もし作成したのにアドレスが表示されないなら以下をお試しください。</p>
+<ol>
+<li>ブラウザのメニューにある拡張機能アイコンをクリックする</li>
+<li><kbd>Mpurse</kbd>をクリックする</li>
+<li><kbd>パスワード</kbd>を入力する</li>
+<li><kbd>承認</kbd>ボタンをクリックする</li>
+<li>このページをリロードする（<kbd>F5</kbd>キー等）</li>
+</ol>
+</details>
+<span>登録者数：<span id="regist-count"></span>人</span>
+<form id="regist-form"><fieldset>
+    <legend>プロフィール</legend>
+    <table>
+    <tr><th>アドレス</th><td><input id="address" value="" placeholder="モナコインのアドレス" required disabled> ※必須</td></tr>
+    <tr><th>名前</th><td><input id="name" value="" placeholder="あなたの表示名" required> ※必須</td></tr>
+    <tr><th>画像</th><td><input id="avatar" value="" placeholder="https://your.site/avatar.png"></td></tr>
+    <tr><th>URL</th><td><input id="url" value="" placeholder="https://your.site/"></td></tr>
+    <tr><th>紹介</th><td><textarea id="description" value="" placeholder="私はこういう者です。"></textarea></td></tr>
+    <tr><th>補足情報</th>
+        <td>
+        <table>
+            <tr><td><input id="field-1-key" placeholder="項目名"></td><td><input id="field-1-value" placeholder="値"></td></tr>
+            <tr><td><input id="field-2-key" placeholder="項目名"></td><td><input id="field-2-value" placeholder="値"></td></tr>
+            <tr><td><input id="field-3-key" placeholder="項目名"></td><td><input id="field-3-value" placeholder="値"></td></tr>
+            <tr><td><input id="field-4-key" placeholder="項目名"></td><td><input id="field-4-value" placeholder="値"></td></tr>
+        </table>
+        </td>
+    </tr>
+    </table>
+    <br>
+    <button id="regist" type="button">登録する</button>
+</fieldset></form>
+<div id="html-profile"></div>
+-->
+<!--
+<button id="get" type="button">取得する</button>
+-->
+<!--<button id="get" type="button">取得する</button>-->
+<!--
+<details><summary>追加情報</summary>
+<h2>保存先</h2>
+<p>　情報は<a href="https://docs.google.com/spreadsheets/d/1r3dS6Q6bm7RduRagrHzHbPlGXtvxCg63NE3TXZIVXFc/edit?usp=sharing" target="_blank" rel="noopener noreferrer">SpreadSheet</a>に保存されます。</p>
+<h2>投げモナボタンを追加表示する</h2>
+<p>　プロフィール補足情報のラベルが「モナコイン」または「MONACOIN」であり、かつその値がmpurseのアドレスらしき文字列であれば、追加で投げモナボタンを表示できる。</p>
+<p>　「mpurseのアドレスらしき文字列」とは最初にみつけた34字以上の連続した英数字である。（正規表現「/[a-zA-Z0-9]{34,}/g」）</p>
+<h2>技術情報</h2>
+<h3>GASのCORSエラーを解決するために</h3>
+<p>　<code>Content-Type: application/json<code>にするとCORSエラーになる。<code>x-www-form-urlencoded</code>で送受信すると成功する。<a href="https://knmts.com/become-engineer-31/" target="_blank" rel="noopener noreferrer">参考</a>, <a href="https://qiita.com/masakielastic/items/70516e074eadf2ce09dd" target="_blank" rel="noopener noreferrer">参考2</a>, <a href="https://qiita.com/att55/items/04e8080d1c441837ad42" target="_blank" rel="noopener noreferrer">参考3</a></p>
+<p>　<a href="https://ytyaru.github.io/Html.Address.Profile.Register.20220614140841/" target="_blank" rel="noopener noreferrer">失敗例</a></p>
+<h2>課題</h2>
+<ul>
+<li><a href="https://monaledge.com/article/401" target="_blank" rel="noopener noreferrer">ブラウザ上でアドレスの本人確認ができない</a></li>
+<li>上記のため、仕方なくmpurseの<code>getAddress()</code>による入力のみ受け付けるようにすることをもって本人確認とした</li>
+<li>上記のため、mpurse以外のアドレスを登録できない</li>
+</ul>
+</details>
+-->
+
+<footer><a href="https://ytyaru.github.io/" title="著者" target="_blank" rel="noopener noreferrer"><img src="./asset/image/avator.png" width="64" height="64">ytyaru</a><mpurse-send-button to="MEHCqJbgiNERCH3bRAtNSSD9uxPViEX1nu" img="coin-monar"></mpurse-send-button><a href="https://ytyaru.github.io/Html.Mpurse.Api.20220517160403/setup.html" title="モナコインを使うには">？</a></footer>
+
+<tweet-button text="いいね！\n"></tweet-button>
+<toot-dialog domain="mstdn.jp pawoo.net" status="いいね！"></toot-dialog>
+<misskey-note-dialog domain="misskey.io misskey.dev" status="いいね！"></misskey-note-dialog>
+<mention-section></mention-section>
+</body>
+</html>
+
