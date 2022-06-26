@@ -12,6 +12,7 @@ window.addEventListener('DOMContentLoaded', async(event) => {
             speed: party.variation.range(100, 700),
             //size: party.variation.range(1, 3),
         })
+        document.querySelector(`input[type=radio][name=party][value=confetti]`).checked = true
     })
     document.getElementById('party-sparkle-star').addEventListener('click', async(event) => {
         console.debug(party)
@@ -21,9 +22,11 @@ window.addEventListener('DOMContentLoaded', async(event) => {
             speed: party.variation.range(100, 500),
             //size: party.variation.range(1, 3),
         })
+        document.querySelector(`input[type=radio][name=party][value=star]`).checked = true
     })
     document.getElementById('party-sparkle-hart').addEventListener('click', async(event) => {
         PartySparkleHart.setup(event.target) 
+        document.querySelector(`input[type=radio][name=party][value=hart]`).checked = true
     })
     document.getElementById('party-img-kind').addEventListener('change', async(event) => {
         document.querySelector(`#party-sparkle-img > img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
@@ -36,6 +39,7 @@ window.addEventListener('DOMContentLoaded', async(event) => {
         const url = `./asset/image/monacoin/${format}${('png'==format) ? '/' + ((64 < size) ? 256 : 64) : ''}/${kind}.${format}`
         console.debug(kind, format, size, url)
         PartySparkleImage.setup(event.target, {src:url, size:size}) 
+        document.querySelector(`input[type=radio][name=party][value=image]`).checked = true
     })
     /*
     //party.resolvableShapes["monar"] = `<img src="./asset/image/monacoin/svg/monar.svg" width="32" height="32"></img>`

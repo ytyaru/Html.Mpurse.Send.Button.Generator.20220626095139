@@ -317,19 +317,9 @@
 <li><a href="https://ytyaru.github.io/Html.MonaCoin.Button.Component.Generator.20220526192239/">投げモナボタンジェネレータ（WebComponent版）</a></li>
 <li><a href="https://ytyaru.github.io/Html.MonaCoin.Button.Component.Generator.Animation.20220531091850/">投げモナボタンジェネレータ（WebComponent版）＋アニメ</a></li>
 <li><a href="https://ytyaru.github.io/Html.MonaCoin.Button.Component.Generator.Slim.20220531090526/">投げモナボタンジェネレータ（WebComponent版）＋アニメ＋コード減量</a></li>
+<li><a href="https://ytyaru.github.io/Html.PartyPopper.Animation.Mpurse.Send.Button.20220623144925/">投げモナするとクラッカーを鳴らすアニメーションを表示する</a></li>
 </ul>
 </details>
-
-<button id="party-confetti-simple" type="button">クラッカーを鳴らす（デフォルト）</button>
-<button id="party-confetti-custom" type="button">クラッカーを鳴らす（カスタム）</button>
-<p>投げモナボタンで送金したあとにクラッカーを鳴らすようにした。</p>
-<mpurse-send-button to="MEHCqJbgiNERCH3bRAtNSSD9uxPViEX1nu" img="coin-monar"></mpurse-send-button>
-
-<h2>投げモナボタンのバグ修正</h2>
-<p>クリックしてもMpurseが起動しないことがあった。原因は<code>click</code>と<code>pointerdown</code>の２種類のイベントを使っていたからだと思われる。<code>pointerdown</code>に統一したら解決したっぽい。30回クリックして全部Mpurseが起動したのを確認した。</p>
-
-<h2>使用ライブラリ</h2>
-<a href="https://party.js.org/">party.js</a>
 
 <!--
 <svg width="240" height="240">
