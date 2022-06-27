@@ -113,6 +113,7 @@
 <script src="js/party-sparkle-hart.js"></script>
 <!--<script src="js/party-sparkle-monar.js"></script>-->
 <script src="js/party-sparkle-image.js"></script>
+<script src="js/image-table-horizon.js"></script>
 <script src="js/main.js"></script>
 </head>
 <body>
@@ -150,17 +151,36 @@
 </td></tr>
 <tr><th>クラッカー</th><td>
 <span>送金完了後のアニメーション</span><br>
+<!--
 <button id="party-confetti" type="button">クラッカー</button>
 <button id="party-sparkle-star" type="button">★</button>
 <button id="party-sparkle-hart" type="button">♥</button>
-<!--
-<button id="party-sparkle-monar" type="button"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></button><br>
--->
 <button id="party-sparkle-img" type="button"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></button><br>
+-->
+<table id="anim-table">
+<!--
+<tr><th rowspan="2">メソッド</th><th colspan="4">形状</th></tr>
+<tr><th><span>■</span></th><th>★</th><th>♥</th><th><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></th><th>混</th></tr>
+-->
+<tr><th>confetti</th>
+<td><button id="party-confetti" type="button">■</button></td>
+<td><button id="party-confetti-star" type="button">★</button></td>
+<td><button id="party-confetti-hart" type="button">♥</button></td>
+<td><button id="party-confetti-img" type="button"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></button></td><td><button id="party-confetti-mix" type="button">混</button></td></tr>
+<tr><th>sparkles</th><td>-</td>
+<td><button id="party-sparkle-star" type="button">★</button></td>
+<td><button id="party-sparkle-hart" type="button">♥</button></td>
+<td><button id="party-sparkle-img" type="button"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></button><br></td><td>-</td></tr>
+</table>
+
 <label><input type="radio" name="party" value="confetti" checked>クラッカー</label>
-<label><input type="radio" name="party" value="star">★</label>
-<label><input type="radio" name="party" value="hart">♥</label>
-<label><input type="radio" name="party" value="image"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
+<label><input type="radio" name="party" value="confetti-star">★</label>
+<label><input type="radio" name="party" value="confetti-hart">♥</label>
+<label><input type="radio" name="party" value="confetti-image"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
+<label><input type="radio" name="party" value="confetti-mix">混</label>
+<label><input type="radio" name="party" value="sparkle-star">★</label>
+<label><input type="radio" name="party" value="sparkle-hart">♥</label>
+<label><input type="radio" name="party" value="sparkle-image"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
 <select id="party-img-kind">
     <option value="coin-mark-black">coin-mark-black<img src="" width="32" height="32"></option>
     <option value="coin-mark">coin-mark</option>
@@ -265,6 +285,7 @@
 <label><input type="checkbox" name="img-files" value="monar" checked><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="monar-no-face" checked><img src="./asset/image/monacoin/png/64/monar-no-face.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="monar-transparent" checked><img src="./asset/image/monacoin/png/64/monar-transparent.png" width="32" heigth="32"></label>
+<div id="image-table"></div>
 </fieldset>
 </td></tr>
 <tr><th>title</th><td>

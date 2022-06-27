@@ -14,23 +14,65 @@ window.addEventListener('DOMContentLoaded', async(event) => {
         })
         document.querySelector(`input[type=radio][name=party][value=confetti]`).checked = true
     })
+    document.getElementById('party-confetti-star').addEventListener('click', async(event) => {
+        console.debug(party)
+        party.confetti(event.target,{
+            shapes: ['star'],
+            lifetime: party.variation.range(5, 7),
+            count: party.variation.range(80, 100),
+            speed: party.variation.range(100, 700),
+        })
+        document.querySelector(`input[type=radio][name=party][value=confetti-star]`).checked = true
+    })
+    document.getElementById('party-confetti-hart').addEventListener('click', async(event) => {
+        console.debug(party)
+        party.confetti(event.target,{
+            shapes: ['hart'],
+            lifetime: party.variation.range(5, 7),
+            count: party.variation.range(80, 100),
+            speed: party.variation.range(100, 700),
+        })
+        document.querySelector(`input[type=radio][name=party][value=confetti-hart]`).checked = true
+    })
+    document.getElementById('party-confetti-img').addEventListener('click', async(event) => {
+        console.debug(party)
+        party.confetti(event.target,{
+            shapes: [document.getElementById('party-img-kind').value],
+            lifetime: party.variation.range(5, 7),
+            count: party.variation.range(30, 40),
+            speed: party.variation.range(100, 700),
+        })
+        document.querySelector(`input[type=radio][name=party][value=confetti-image]`).checked = true
+    })
+    document.getElementById('party-confetti-mix').addEventListener('click', async(event) => {
+        console.debug(party)
+        party.confetti(event.target,{
+            shapes: ['square', 'hart', document.getElementById('party-img-kind').value],
+            lifetime: party.variation.range(5, 7),
+            count: party.variation.range(80, 100),
+            speed: party.variation.range(100, 700),
+        })
+        document.querySelector(`input[type=radio][name=party][value=confetti-mix]`).checked = true
+    })
+
     document.getElementById('party-sparkle-star').addEventListener('click', async(event) => {
         console.debug(party)
         party.sparkles(event.target,{
             lifetime: party.variation.range(2, 3),
             count: party.variation.range(30, 40),
             speed: party.variation.range(100, 500),
-            //size: party.variation.range(1, 3),
         })
-        document.querySelector(`input[type=radio][name=party][value=star]`).checked = true
+        document.querySelector(`input[type=radio][name=party][value=sparkle-star]`).checked = true
     })
     document.getElementById('party-sparkle-hart').addEventListener('click', async(event) => {
-        PartySparkleHart.setup(event.target) 
-        document.querySelector(`input[type=radio][name=party][value=hart]`).checked = true
+        PartySparkleHart.animate(event.target) 
+        document.querySelector(`input[type=radio][name=party][value=sparkle-hart]`).checked = true
     })
     document.getElementById('party-img-kind').addEventListener('change', async(event) => {
+        document.querySelector(`#party-confetti-img > img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
         document.querySelector(`#party-sparkle-img > img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
-        document.querySelector(`input[type=radio][name=party][value=image] + img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
+        document.querySelector(`input[type=radio][name=party][value=confetti-image] + img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
+        document.querySelector(`input[type=radio][name=party][value=sparkle-image] + img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
     })
     document.getElementById('party-sparkle-img').addEventListener('click', async(event) => {
         const kind = document.getElementById('party-img-kind').value
@@ -38,43 +80,17 @@ window.addEventListener('DOMContentLoaded', async(event) => {
         const size = document.getElementById('party-img-size').value
         const url = `./asset/image/monacoin/${format}${('png'==format) ? '/' + ((64 < size) ? 256 : 64) : ''}/${kind}.${format}`
         console.debug(kind, format, size, url)
-        PartySparkleImage.setup(event.target, {src:url, size:size}) 
-        document.querySelector(`input[type=radio][name=party][value=image]`).checked = true
+        PartySparkleImage.animate(event.target, {src:url, size:size}) 
+        document.querySelector(`input[type=radio][name=party][value=sparkle-image]`).checked = true
     })
-    /*
-    //party.resolvableShapes["monar"] = `<img src="./asset/image/monacoin/svg/monar.svg" width="32" height="32"></img>`
-    //party.resolvableShapes["monar"] = fetch(`./asset/image/monacoin/svg/monar.svg`).then(res=>res.text().then(txt=>txt))
-    let res = await fetch(`./asset/image/monacoin/svg/monar.svg`)
-    let svg = await res.text()
-    party.resolvableShapes["monar"] = svg
-    console.debug(party.resolvableShapes)
-    document.getElementById('party-sparkle-monar').addEventListener('click', async(event) => {
-        //PartySparkleMonar.setup(event.target) 
-        party.confetti(event.target,{
-            shapes: ['monar'],
-            lifetime: party.variation.range(4, 5),
-            count: party.variation.range(30, 40),
-            speed: party.variation.range(100, 500),
-            size: party.variation.range(0.2, 0.2),
-        })
+    document.getElementById('party-img-size').addEventListener('change', async(event) => {
+        const kind = document.getElementById('party-img-kind').value
+        const format = document.querySelector(`input[name=party-img-format][checked]`).value
+        const size = parseInt(event.target.value)
+        PartySparkleImage.setup(format, size)
     })
-    */
-
-    /*
-    document.getElementById('party-confetti-simple').addEventListener('click', async(event) => {
-        console.debug(party)
-        party.confetti(event.target)
-    })
-    document.getElementById('party-confetti-custom').addEventListener('click', async(event) => {
-        console.debug(party)
-        party.confetti(event.target,{
-            lifetime: party.variation.range(5, 7),
-            count: party.variation.range(80, 100),
-            speed: party.variation.range(100, 700),
-            //size: party.variation.range(1, 3),
-        })
-    })
-    */
+    const table = new ImageTableHorizon() 
+    document.getElementById('image-table').innerHTML = await table.make()
     /*
     document.getElementById('get-transaction').addEventListener('click', async(event) => {
         const address = document.getElementById('address').value
@@ -180,5 +196,8 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     await reciverMastodon.recive()
     const reciverMisskey = new MisskeyRedirectCallbackReciver()
     await reciverMisskey.recive()
+
+    PartySparkleHart.setup()
+    PartySparkleImage.setup()
 });
 
