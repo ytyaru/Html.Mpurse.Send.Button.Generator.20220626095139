@@ -129,12 +129,20 @@ class MpurseSendButton extends HTMLElement {
         console.debug(this.size, this.src)
         return img
     }
+    // https://qiita.com/manabuyasuda/items/01a76204f97cd73ffc4e#object%E3%82%BF%E3%82%B0%E3%81%A7%E3%83%95%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF%E3%81%99%E3%82%8B
     #makeSendButtonObject() { // SVG内のCSSを有効化するためにはimgでなくobjectを使う必要がある
         const object = document.createElement('object')
         object.setAttribute('type', `image/svg+xml`)
+        object.setAttribute('data', `${this.#getImgSrc()}`)
         object.setAttribute('width', `${this.size}`)
         object.setAttribute('height', `${this.size}`)
-        object.setAttribute('data', `${this.#getImgSrc()}`)
+        // PNGでフォールバックする（SVGが表示できなければPNGで表示する）
+        const png = document.createElement('object')
+        png.setAttribute('type', `image/png`)
+        png.setAttribute('data', `${this.baseUrl}png/${((64 < this.size) ? 256 : 64)}/${this.srcId}.png`)
+        png.setAttribute('width', `${this.size}`)
+        png.setAttribute('height', `${this.size}`)
+        object.appendChild(png)
         return object
     }
     #getImgSrc() {
