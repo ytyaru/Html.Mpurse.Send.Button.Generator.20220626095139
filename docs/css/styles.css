@@ -13,6 +13,22 @@ img.icon {
     height: 1em;
 }
 */
+/* 表示できない：https://stackoverflow.com/questions/2965971/how-to-add-images-in-select-list */
+#img-kind option[value="coin-mark-black"] { background-image:url(../asset/image/monacoin/png/64/coin-mark-black.png); }
+#img-kind option[value="coin-mark"] { background-image:url(../asset/image/monacoin/png/64/coin-mark.png); }
+#img-kind option[value="mark-outline"] { background-image:url(../asset/image/monacoin/png/64/mark-outline.png); }
+#img-kind option[value="mark"] { background-image:url(../asset/image/monacoin/png/64/mark.png); }
+#img-kind option[value="coin-monar-mouth-red"] { background-image:url(../asset/image/monacoin/png/64/coin-monar-mouth-red.png); }
+#img-kind option[value="coin-monar"] { background-image:url(../asset/image/monacoin/png/64/coin-monar.png); }
+#img-kind option[value="coin-mini-monar-mouth-red"] { background-image:url(../asset/image/monacoin/png/64/coin-mini-monar-mouth-red.png); }
+#img-kind option[value="coin-mini-monar-mouth-red"] { background-image:url(../asset/image/monacoin/png/64/coin-mini-monar-mouth-red.png); }
+#img-kind option[value="coin-mini-monar"] { background-image:url(../asset/image/monacoin/png/64/coin-mini-monar.png); }
+#img-kind option[value="monar-mark"] { background-image:url(../asset/image/monacoin/png/64/monar-mark.png); }
+#img-kind option[value="monar-mark-white"] { background-image:url(../asset/image/monacoin/png/64/monar-mark-white.png); }
+#img-kind option[value="monar-mouth-red"] { background-image:url(../asset/image/monacoin/png/64/monar-mouth-red.png); }
+#img-kind option[value="monar"] { background-image:url(../asset/image/monacoin/png/64/monar.png); }
+#img-kind option[value="onar-no-face"] { background-image:url(../asset/image/monacoin/png/64/onar-no-face.png); }
+#img-kind option[value="monar-transparent"] { background-image:url(../asset/image/monacoin/png/64/monar-transparent.png); }
 #content {
     display: flex;
 }

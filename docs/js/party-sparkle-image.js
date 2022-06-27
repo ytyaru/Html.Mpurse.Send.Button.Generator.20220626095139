@@ -19,9 +19,9 @@ class PartySparkleImage {
         for (const id of ids) {
            // const url = `./asset/image/monacoin/png/64/${id}.png`
             const url = `./asset/image/monacoin/${format}${('png'==format) ? '/' + ((64 < size) ? 256 : 64) : ''}/${id}.${format}`
-            console.debug(url)
+            //console.debug(url)
             party.resolvableShapes[id] = this.img(url, size).outerHTML
-            console.debug(id, party.resolvableShapes[id])
+            //console.debug(id, party.resolvableShapes[id])
         }
     }
     static img(src, size=32) {
