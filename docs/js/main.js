@@ -18,17 +18,16 @@ window.addEventListener('DOMContentLoaded', async(event) => {
             await gen.generate((document.getElementById('img-src').value) ? null : event.target.id)
         })
     }
-    document.getElementById('src').addEventListener('change', async(event) => {
-        console.log(event)
-        console.log(event.target.value)
-        document.getElementById('img-src-img').src = event.target.value
-        document.getElementById('img-src-img').style.display = (event.target.value) ? 'inline' : 'none'
-        await gen.generate() 
-    })
+    document.getElementById('src').addEventListener('change', async(event) => { await gen.generate() })
     document.getElementById('size').addEventListener('change', async(event) => { await gen.generate() })
     document.getElementById('title').addEventListener('change', async(event) => { await gen.generate() })
     document.getElementById('ok').addEventListener('input', async(event) => { await gen.generate() })
     document.getElementById('cancel').addEventListener('input', async(event) => { await gen.generate() })
+    for (const ui of document.querySelectorAll(`input[type=radio][name=party]`)) { ui.addEventListener('change', async(event) => { await gen.generate() }) }
+    for (const ui of document.querySelectorAll(`input[type=radio][name=format]`)) { ui.addEventListener('input', async(event) => { console.debug(event.target.value); await gen.generate() }) }
+    //for (const ui of document.querySelectorAll(`input[type=radio][name=format]`)) { ui.addEventListener('change', async(event) => { await gen.generate() }) }
+    document.getElementById('src-id').addEventListener('change', async(event) => { await gen.generate() })
+
     document.getElementById('copy-to-clipboard').addEventListener('click', async(event) => { await gen.copy() })
     document.getElementById('download-zip').addEventListener('click', async(event) => {
         const selectedImgId = (document.getElementById('img-src').value) ? null : [...document.querySelectorAll(`input[type="radio"][name="img"]`)].filter(input=>input.checked)[0].id

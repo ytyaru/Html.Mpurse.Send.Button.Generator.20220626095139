@@ -7,6 +7,7 @@ class MpurseSendButton extends HTMLElement {
               .on('addressChanged', address => this.addressChanged(address));
         } catch(e) { console.debug(e) }
         this.title = '投げモナする'
+        this.alt = '投げモナする'
         //this.src = './asset/image/monacoin/png/64/coin-monar.png'
         this.src = null
         this.srcId = 'coin-monar'
@@ -17,14 +18,14 @@ class MpurseSendButton extends HTMLElement {
         this.memo = ''
         this.ok = '投げモナしました！\nありがとうございます！（ ´∀｀）'
         this.cancel = 'キャンセルしました(´・ω・｀)'
-        this.baseUrl = './asset/image/monacoin'
-        if (!this.baseUrl.endsWith('/')) { this.baseUrl += '/' }
+        this.baseUrl = './asset/image/monacoin/'
         this.format = 'png' // svg
         this.party = 'confetti' // confetti,confetti-star,confetti-hart,confetti-img,confetti-mix,sparkle,sparkle-star,sparkle-hart,sparkle-img
         this.partySrc = null
         //this.partySrc = './asset/image/monacoin/png/64/monar.png' // sparkle-imageのとき使う画像
         this.partySrcId = 'monar' // confetti-img,sparkle-imgのとき使う画像
         this.partySize = 32 // 画像サイズ
+        if (!this.baseUrl.endsWith('/')) { this.baseUrl += '/' }
         if (PartySparkleHart) { PartySparkleHart.setup() }
         if (PartySparkleImage) { PartySparkleImage.setup(this.format, this.partySize) }
     }
@@ -49,12 +50,15 @@ class MpurseSendButton extends HTMLElement {
     async connectedCallback() {
         const shadow = this.attachShadow({ mode: 'open' }); // マウスイベント登録に必要だった。CSS的にはclosedにしたいのに。
         const button = await this.#make()
+        //await this.#makeClickEvent()
+        console.debug(button.outerHTML)
+        //console.debug(button.innerHTML)
+        //shadow.innerHTML = `<style>${this.#cssBase()}${this.#cssAnimation()}</style>${button.innerHTML}` 
+        shadow.innerHTML = `<style>${this.#cssBase()}${this.#cssAnimation()}</style>${button.outerHTML}` 
+        this.shadowRoot.querySelector('img,object').addEventListener('animationend', (e)=>{ e.target.classList.remove('jump'); }, false);
         await this.#makeClickEvent()
-        console.debug(button.innerHTML)
-        shadow.innerHTML = `<style>${this.#cssBase()}${this.#cssAnimation()}</style>${button.innerHTML}` 
-        this.shadowRoot.querySelector('img').addEventListener('animationend', (e)=>{ e.target.classList.remove('jump'); }, false);
     }
-    #cssBase() { return `img{cursor:pointer; text-align:center; vertical-align:middle; user-select:none;}` }
+    #cssBase() { return `a{display:inline-block;cursor:pointer;}object{pointer-events:none;}img,object{text-align:center; vertical-align:middle; user-select:none;}` }
     #cssAnimation() { return `
 @keyframes jump {
   from {
@@ -93,9 +97,23 @@ class MpurseSendButton extends HTMLElement {
     }
     async #make() {
         const a = await this.#makeSendButtonA()
-        const img = this.#makeSendButtonImg()
+        //const img = this.#makeSendButtonImg()
+        //const img = (this.src) ? ((this.src.endsWith('svg')) ? this.#makeSendButtonObject() : this.this.#makeSendButtonImg()) : ((this.form) ? (('svg'===this.form) ? this.#makeSendButtonObject() : this.#makeSendButtonImg()) : this.#makeSendButtonImg())
+        const img = this.#makeImgObj()
         a.appendChild(img)
         return a
+    }
+    #makeImgObj() {
+        console.debug(this.src)
+        console.debug(this.format)
+        if (this.src) {
+            if (this.src.endsWith('svg')) { return this.#makeSendButtonObject() }
+            return this.#makeSendButtonImg()
+        }
+        if (this.format) {
+            if ('svg'===this.format) { return this.#makeSendButtonObject() }
+        }
+        return this.#makeSendButtonImg()
     }
     #makeSendButtonA() {
         const a = document.createElement('a')
@@ -107,8 +125,17 @@ class MpurseSendButton extends HTMLElement {
         img.setAttribute('width', `${this.size}`)
         img.setAttribute('height', `${this.size}`)
         img.setAttribute('src', `${this.#getImgSrc()}`)
+        img.setAttribute('alt', `${this.alt}`)
         console.debug(this.size, this.src)
         return img
+    }
+    #makeSendButtonObject() { // SVG内のCSSを有効化するためにはimgでなくobjectを使う必要がある
+        const object = document.createElement('object')
+        object.setAttribute('type', `image/svg+xml`)
+        object.setAttribute('width', `${this.size}`)
+        object.setAttribute('height', `${this.size}`)
+        object.setAttribute('data', `${this.#getImgSrc()}`)
+        return object
     }
     #getImgSrc() {
         if (this.src) { return this.src }
@@ -124,7 +151,7 @@ class MpurseSendButton extends HTMLElement {
         this.addEventListener('pointerdown', async(event) => {
             console.debug(`クリックしました。\n宛先：${to}\n金額：${amount} ${asset}\nメモ：${memo}`)
             console.debug(event.target)
-            event.target.shadowRoot.querySelector('img').classList.add('jump')
+            event.target.shadowRoot.querySelector('img,object').classList.add('jump')
             //this.#party()
             const txHash = await window.mpurse.sendAsset(to, asset, amount, memoType, memo).catch((e) => null);
             console.debug(txHash)

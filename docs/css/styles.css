@@ -13,6 +13,7 @@ img.icon {
     height: 1em;
 }
 */
+object{pointer-events:none;}
 /* 表示できない：https://stackoverflow.com/questions/2965971/how-to-add-images-in-select-list */
 #img-kind option[value="coin-mark-black"] { background-image:url(../asset/image/monacoin/png/64/coin-mark-black.png); }
 #img-kind option[value="coin-mark"] { background-image:url(../asset/image/monacoin/png/64/coin-mark.png); }
