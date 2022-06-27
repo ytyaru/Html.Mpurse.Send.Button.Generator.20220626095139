@@ -114,6 +114,9 @@
 <!--<script src="js/party-sparkle-monar.js"></script>-->
 <script src="js/party-sparkle-image.js"></script>
 <script src="js/image-table-horizon.js"></script>
+
+<script src="js/app/mpurse-send-button-generator.js"></script>
+
 <script src="js/main.js"></script>
 </head>
 <body>
@@ -144,10 +147,10 @@
 </td></tr>
 <tr><th>メモ</th><td><input id="memo" value="" placeholder="Good job!"></td></tr>
 <tr><th>完了</th><td>
-<input id="ok-msg" value="投げモナしました！\nありがとうございます！（ ´∀｀）" placeholder="成功時に実行するコード">
+<input id="ok" value="投げモナしました！\nありがとうございます！（ ´∀｀）" placeholder="成功時に実行するコード">
 </td></tr>
 <tr><th>中止</th><td>
-<input id="ng-msg" value="キャンセルしました(´・ω・｀)"  placeholder="成功時に実行するコード">
+<input id="cancel" value="キャンセルしました(´・ω・｀)"  placeholder="成功時に実行するコード">
 </td></tr>
 <tr><th>クラッカー</th><td>
 <span>送金完了後のアニメーション</span><br>
@@ -181,8 +184,9 @@
 <label><input type="radio" name="party" value="sparkle-star">★</label>
 <label><input type="radio" name="party" value="sparkle-hart">♥</label>
 <label><input type="radio" name="party" value="sparkle-image"><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
-<select id="party-img-kind">
-    <option value="coin-mark-black">coin-mark-black<img src="" width="32" height="32"></option>
+<input id="party-src" value="" type="text" placeholder="送金後アニメ画像URL" style="vertical-align:middle;">
+<select id="party-src-id">
+    <option value="coin-mark-black">coin-mark-black</option>
     <option value="coin-mark">coin-mark</option>
     <option value="mark-outline">mark-outline</option>
     <option value="mark">mark</option>
@@ -197,9 +201,13 @@
     <option value="monar-no-face">monar-no-face</option>
     <option value="monar-transparent">monar-transparent</option>
 </select>
-<label><input type="radio" value="png" name="party-img-format">PNG</label>
-<label><input type="radio" value="svg" name="party-img-format" checked>SVG</label>
-<select id="party-img-size">
+<!--
+<label><input type="radio" value="png" name="format">PNG</label>
+<label><input type="radio" value="svg" name="format" checked>SVG</label>
+-->
+<label><input type="radio" value="png" name="format">PNG</label>
+<label><input type="radio" value="svg" name="format" checked>SVG</label>
+<select id="party-size">
     <option value="16">16</option>
     <option value="32" selected>32</option>
     <option value="64">64</option>
@@ -224,9 +232,10 @@
 <label title="SVGで表示しPNGをフォールバックにする"><input type="radio" value="svg_png" name="img-format" checked>SVG+PNG</label>
 </fieldset>
 <fieldset><legend>デフォルト</legend>
-<input id="img-src" value="" type="text" placeholder="自サイトに配置した画像URL" style="vertical-align:middle;">
-<select id="img-kind">
-    <option value="coin-mark-black" style="background-image:url(asset/image/monacoin/png/64/coin-mark-black.png);">coin-mark-black</option>
+<input id="base-url" value="./asset/image/monacoin" type="text" placeholder="画像ベースURL">
+<input id="src" value="" type="text" placeholder="自サイトに配置した画像URL" style="vertical-align:middle;">
+<select id="src-id">
+    <option value="coin-mark-black">coin-mark-black</option>
     <option value="coin-mark">coin-mark</option>
     <option value="mark-outline">mark-outline</option>
     <option value="mark">mark</option>
@@ -241,8 +250,8 @@
     <option value="monar-no-face">monar-no-face</option>
     <option value="monar-transparent">monar-transparent</option>
 </select>
-<input id="img-size" type="number" value="64" min="1" step="1" placeholder="表示する画像サイズ" list="datalist-img-size" >
-<datalist id="datalist-img-size">
+<input id="size" type="number" value="64" min="1" step="1" placeholder="表示する画像サイズ" list="datalist-size" >
+<datalist id="datalist-size">
     <option value="16">
     <option value="32">
     <option value="64" selected>
@@ -304,9 +313,9 @@
 </table>
 -->
 <!--
-<img id="img-src-img" src="" width="32" height="32" title="coin-mark">
-<label><input id="img-src" name="base64" type="checkbox"></input>埋め込み（Base64）</label>
-<label><input id="img-src" name="base64-coin-mark" type="checkbox"></input></label>
+<img id="src-img" src="" width="32" height="32" title="coin-mark">
+<label><input id="src" name="base64" type="checkbox"></input>埋め込み（Base64）</label>
+<label><input id="src" name="base64-coin-mark" type="checkbox"></input></label>
 -->
 <!--
 <table>
@@ -314,7 +323,7 @@
 <tr><td><label><input name="img" id="coin-mark-64" type="radio"></input>coin-mark-64</label></td><td><label><input name="img" id="coin-monar-64" type="radio" checked></input>coin-monar-64</label></td><td><label><input name="img" id="monar-mark-64" type="radio"></input>monar-mark-64</label></td></tr>
 <tr><td><label><input name="img" id="coin-mark-256" type="radio"></input>coin-mark-256</label></td><td><label><input name="img" id="coin-monar-256" type="radio"></input>coin-monar-256</label></td><td><label><input name="img" id="monar-mark-256" type="radio"></input>monar-mark-256</label></td></tr>
 </table>
-<select id="img-size">
+<select id="size">
     <option value="16">16</option>
     <option value="32">32</option>
     <option value="64" selected>64</option>

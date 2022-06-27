@@ -4,6 +4,37 @@ window.addEventListener('DOMContentLoaded', async(event) => {
           .on('stateChanged', async(isUnlocked) => { await init(); console.log(isUnlocked); })
           .on('addressChanged', async(address) => { await init(address); console.log(address); });
     } catch(e) { console.debug(e) }
+    const gen = new MpurseSendButtonGenerator() 
+    document.getElementById('get-address').addEventListener('click', async(event) => {
+        document.getElementById('to').value = await window.mpurse.getAddress()
+        await gen.generate()
+    })
+    document.getElementById('to').addEventListener('input', async(event) => { await gen.generate() })
+    document.getElementById('amount').addEventListener('input', async(event) => { await gen.generate() })
+    document.getElementById('asset').addEventListener('input', async(event) => { await gen.generate() })
+    document.getElementById('memo').addEventListener('input', async(event) => { await gen.generate() })
+    for (const radio of document.querySelectorAll('input[name="img"]')) {
+        radio.addEventListener('change', async(event) => {
+            await gen.generate((document.getElementById('img-src').value) ? null : event.target.id)
+        })
+    }
+    document.getElementById('src').addEventListener('change', async(event) => {
+        console.log(event)
+        console.log(event.target.value)
+        document.getElementById('img-src-img').src = event.target.value
+        document.getElementById('img-src-img').style.display = (event.target.value) ? 'inline' : 'none'
+        await gen.generate() 
+    })
+    document.getElementById('size').addEventListener('change', async(event) => { await gen.generate() })
+    document.getElementById('title').addEventListener('change', async(event) => { await gen.generate() })
+    document.getElementById('ok').addEventListener('input', async(event) => { await gen.generate() })
+    document.getElementById('cancel').addEventListener('input', async(event) => { await gen.generate() })
+    document.getElementById('copy-to-clipboard').addEventListener('click', async(event) => { await gen.copy() })
+    document.getElementById('download-zip').addEventListener('click', async(event) => {
+        const selectedImgId = (document.getElementById('img-src').value) ? null : [...document.querySelectorAll(`input[type="radio"][name="img"]`)].filter(input=>input.checked)[0].id
+        await zip.download(selectedImgId)
+    })
+
     document.getElementById('party-confetti').addEventListener('click', async(event) => {
         console.debug(party)
         party.confetti(event.target,{
@@ -13,6 +44,7 @@ window.addEventListener('DOMContentLoaded', async(event) => {
             //size: party.variation.range(1, 3),
         })
         document.querySelector(`input[type=radio][name=party][value=confetti]`).checked = true
+        gen.generate()
     })
     document.getElementById('party-confetti-star').addEventListener('click', async(event) => {
         console.debug(party)
@@ -23,6 +55,7 @@ window.addEventListener('DOMContentLoaded', async(event) => {
             speed: party.variation.range(100, 700),
         })
         document.querySelector(`input[type=radio][name=party][value=confetti-star]`).checked = true
+        gen.generate()
     })
     document.getElementById('party-confetti-hart').addEventListener('click', async(event) => {
         console.debug(party)
@@ -33,26 +66,29 @@ window.addEventListener('DOMContentLoaded', async(event) => {
             speed: party.variation.range(100, 700),
         })
         document.querySelector(`input[type=radio][name=party][value=confetti-hart]`).checked = true
+        gen.generate()
     })
     document.getElementById('party-confetti-img').addEventListener('click', async(event) => {
         console.debug(party)
         party.confetti(event.target,{
-            shapes: [document.getElementById('party-img-kind').value],
+            shapes: [document.getElementById('party-src-id').value],
             lifetime: party.variation.range(5, 7),
             count: party.variation.range(30, 40),
             speed: party.variation.range(100, 700),
         })
         document.querySelector(`input[type=radio][name=party][value=confetti-image]`).checked = true
+        gen.generate()
     })
     document.getElementById('party-confetti-mix').addEventListener('click', async(event) => {
         console.debug(party)
         party.confetti(event.target,{
-            shapes: ['square', 'hart', document.getElementById('party-img-kind').value],
+            shapes: ['square', 'hart', document.getElementById('party-src-id').value],
             lifetime: party.variation.range(5, 7),
             count: party.variation.range(80, 100),
             speed: party.variation.range(100, 700),
         })
         document.querySelector(`input[type=radio][name=party][value=confetti-mix]`).checked = true
+        gen.generate()
     })
 
     document.getElementById('party-sparkle-star').addEventListener('click', async(event) => {
@@ -63,31 +99,36 @@ window.addEventListener('DOMContentLoaded', async(event) => {
             speed: party.variation.range(100, 500),
         })
         document.querySelector(`input[type=radio][name=party][value=sparkle-star]`).checked = true
+        gen.generate()
     })
     document.getElementById('party-sparkle-hart').addEventListener('click', async(event) => {
         PartySparkleHart.animate(event.target) 
         document.querySelector(`input[type=radio][name=party][value=sparkle-hart]`).checked = true
+        gen.generate()
     })
-    document.getElementById('party-img-kind').addEventListener('change', async(event) => {
+    document.getElementById('party-src-id').addEventListener('change', async(event) => {
         document.querySelector(`#party-confetti-img > img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
         document.querySelector(`#party-sparkle-img > img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
         document.querySelector(`input[type=radio][name=party][value=confetti-image] + img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
         document.querySelector(`input[type=radio][name=party][value=sparkle-image] + img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
+        gen.generate()
     })
     document.getElementById('party-sparkle-img').addEventListener('click', async(event) => {
-        const kind = document.getElementById('party-img-kind').value
-        const format = document.querySelector(`input[name=party-img-format][checked]`).value
-        const size = document.getElementById('party-img-size').value
-        const url = `./asset/image/monacoin/${format}${('png'==format) ? '/' + ((64 < size) ? 256 : 64) : ''}/${kind}.${format}`
-        console.debug(kind, format, size, url)
+        const id = document.getElementById('party-src-id').value
+        const format = document.querySelector(`input[name=format][checked]`).value
+        const size = document.getElementById('party-size').value
+        const url = `./asset/image/monacoin/${format}${('png'==format) ? '/' + ((64 < size) ? 256 : 64) : ''}/${id}.${format}`
+        console.debug(id, format, size, url)
         PartySparkleImage.animate(event.target, {src:url, size:size}) 
         document.querySelector(`input[type=radio][name=party][value=sparkle-image]`).checked = true
+        gen.generate()
     })
-    document.getElementById('party-img-size').addEventListener('change', async(event) => {
-        const kind = document.getElementById('party-img-kind').value
-        const format = document.querySelector(`input[name=party-img-format][checked]`).value
+    document.getElementById('party-size').addEventListener('change', async(event) => {
+        const id = document.getElementById('party-src-id').value
+        const format = document.querySelector(`input[name=format][checked]`).value
         const size = parseInt(event.target.value)
         PartySparkleImage.setup(format, size)
+        gen.generate()
     })
     const table = new ImageTableHorizon() 
     document.getElementById('image-table').innerHTML = await table.make()

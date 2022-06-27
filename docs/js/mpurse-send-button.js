@@ -32,7 +32,7 @@ class MpurseSendButton extends HTMLElement {
         return ['to', 'asset', 'amount', 'memo', 'src', 'size', 'title', 'ok', 'cancel', 'src-id', 'base-url', 'format', 'party', 'party-src', 'party-src-id', 'party-size'];
     }
     attributeChangedCallback(property, oldValue, newValue) {
-        //if (oldValue === newValue) { return; }
+        if (oldValue === newValue) { return; }
         const isChainCase = property.includes('-')
         const nums = ['size', 'party-size']
         const name = (isChainCase) ? property.split('-').map((s,i)=>(0===i) ? s.toLowerCase() : s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()).join('') : property
@@ -45,36 +45,6 @@ class MpurseSendButton extends HTMLElement {
             if (PartySparkleImage) { PartySparkleImage.setup(this.format, this.partySize) }
         }
         console.debug(property, name, value)
-        /*
-        if (isChainCase) {
-            const camel = property.split('-').map((s,i)=>(0===i) ? s.toLowerCase() : s.charAt(0).toUpperCase() + s.slice(1).toLowerCase())
-            this[camel] = newValue
-            if (nums.includes(property)) {
-
-            }
-        }
-        else if ('size' === property || 'amount' === property) { this[property] = Number(newValue) }
-        else if ('base-url' === property) {
-            this.baseUrl = newValue
-            if (!this.baseUrl.endsWith('/')) { this.baseUrl += '/' }
-        }
-        else if ('src-id' === property) { this.srcId = newValue }
-        else if ('party-src' === property) {
-            this.partySrc = newValue
-        }
-        else if ('party-src-id' === property) {
-            this.partySrcId = newValue
-        }
-        else if ('party-size' === property) {
-            this.partySize = Number(newValue)
-            if (PartySparkleImage) { PartySparkleImage.setup(this.format, this.partySize) }
-        }
-        else if ('format' === property) {
-            this[property] = newValue;
-            if (PartySparkleImage) { PartySparkleImage.setup(this.format, this.partySize) }
-        }
-        else { this[property] = newValue; }
-        */
     }
     async connectedCallback() {
         const shadow = this.attachShadow({ mode: 'open' }); // マウスイベント登録に必要だった。CSS的にはclosedにしたいのに。
