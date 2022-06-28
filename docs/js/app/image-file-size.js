@@ -26,22 +26,15 @@ class ImageFileSize {
             if (sizes.includes('64')) { tsvs.push(this.tsvs[1]) }
             if (sizes.includes('256')) { tsvs.push(this.tsvs[2]) }
         }
-        console.debug(files, tsvs)
         for (const file of files) {
-            console.debug(file)
             for (const tsv of tsvs) {
-                console.debug(tsv)
                 for (const line of tsv) {
-                    console.debug(file, line)
                     if (file === line[0].split('.').slice(0, -1).join('.')) {
-                        console.debug(line)
-                        //sum += Number(line[2])
                         sum += parseInt(line[2])
                     }
                 }
             }
         }
-        console.debug(sum)
         return sum
     }
     unit(value) { // B, KB, MB, GB

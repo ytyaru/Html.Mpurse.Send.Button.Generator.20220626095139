@@ -1,14 +1,15 @@
 window.addEventListener('DOMContentLoaded', async(event) => {
     try {
         window.mpurse.updateEmitter.removeAllListeners()
-          .on('stateChanged', async(isUnlocked) => { await init(); console.log(isUnlocked); })
-          .on('addressChanged', async(address) => { await init(address); console.log(address); });
+          .on('stateChanged', async(isUnlocked) => { /*await init();*/ console.log(isUnlocked); })
+          .on('addressChanged', async(address) => { /*await init(address);*/ console.log(address); });
     } catch(e) { console.debug(e) }
+    Loading.setup()
+    //Loading.show()
     const gen = new MpurseSendButtonGenerator() 
     const downloader = new ZipDownloader()
     const imgSz = new ImageFileSize()
     await imgSz.setup()
-    
     document.getElementById('get-address').addEventListener('click', async(event) => {
         document.getElementById('to').value = await window.mpurse.getAddress()
         await gen.generate()
@@ -265,5 +266,8 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     //await gen.generate()
     document.getElementById('get-address').dispatchEvent(new Event('click'))
     imgSz.show();
+    //Loading.hide()
 });
-
+window.addEventListener('load', async(event) => {
+    //Loading.hide()
+})
