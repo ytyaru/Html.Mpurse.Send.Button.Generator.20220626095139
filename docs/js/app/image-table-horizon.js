@@ -1,25 +1,19 @@
 class ImageTableHorizon {
-    async make() {
+    async make(_tsvs) {
         let baseUrl = `./asset/image/monacoin/`
-        const dirs = [`png/64/`, `png/256/`, `svg/`]
-        const tsvPaths = dirs.map(d=>baseUrl+d+`list.tsv`)
-        const tsvs = []
-        for (const path of tsvPaths) {
-            const res = await fetch(path)
-            const tsv = await res.text()
-            tsvs.push(tsv.split(/\r\n|\n/).filter(v=>v))
-        }
+        const dirs = [`svg/`, `png/64/`, `png/256/`]
+        const tsvs = _tsvs
         const [png64s, png256s, svgs, modes, png64Sizes, png256Sizes, svgSizes] = [[],[],[],[],[],[],[]]
         for (let i=0; i<tsvs[0].length; i++) {
-            const [png64Name, png64Size, png64Size2] = tsvs[0][i].split('\t')
-            const [png256Name, png256Size, png256Size2] = tsvs[1][i].split('\t')
-            const [svgName, svgSize, svgSize2, svgMode] = tsvs[2][i].split('\t')
-            png64s.push(this.#makePngColumns(`${baseUrl}${dirs[0]}`, png64Name, png64Size, png64Size2))
-            png256s.push(this.#makePngColumns(`${baseUrl}${dirs[1]}`, png256Name, png256Size, png256Size2))
+            const [svgName, svgSize, svgSize2, svgMode] = tsvs[0][i]
+            const [png64Name, png64Size, png64Size2] = tsvs[1][i]
+            const [png256Name, png256Size, png256Size2] = tsvs[2][i]
+            svgs.push(this.#makeSvgColumns(`${baseUrl}${dirs[0]}`, svgName, svgSize, svgSize2, svgMode))
+            png64s.push(this.#makePngColumns(`${baseUrl}${dirs[1]}`, png64Name, png64Size, png64Size2))
+            png256s.push(this.#makePngColumns(`${baseUrl}${dirs[2]}`, png256Name, png256Size, png256Size2))
+            svgSizes.push(this.#makeSvgSizeColumns(svgName, svgSize, svgSize2, svgMode))
             png64Sizes.push(this.#makePngSizeColumns(png64Name, png64Size, png64Size2))
             png256Sizes.push(this.#makePngSizeColumns(png256Name, png256Size, png256Size2))
-            svgs.push(this.#makeSvgColumns(`${baseUrl}${dirs[2]}`, svgName, svgSize, svgSize2, svgMode))
-            svgSizes.push(this.#makeSvgSizeColumns(svgName, svgSize, svgSize2, svgMode))
             modes.push(this.#makeSvgColorSchemeColumns(svgMode))
         }
         return `<table>

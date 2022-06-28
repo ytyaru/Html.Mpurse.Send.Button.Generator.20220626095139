@@ -116,8 +116,9 @@
 <script src="js/party-sparkle-hart.js"></script>
 <!--<script src="js/party-sparkle-monar.js"></script>-->
 <script src="js/party-sparkle-image.js"></script>
-<script src="js/image-table-horizon.js"></script>
 
+<script src="js/app/image-file-size.js"></script>
+<script src="js/app/image-table-horizon.js"></script>
 <script src="js/app/mpurse-send-button-generator.js"></script>
 <script src="js/app/zip-downloader.js"></script>
 
@@ -268,6 +269,7 @@
 
 </fieldset>
 <fieldset><legend>内蔵</legend>
+<span id="all-file-size"></span>
 <select id="img-file-sizes">
     <option value="64">64</option>
     <option value="256">256</option>
@@ -288,20 +290,20 @@
 <label><input type="checkbox" name="img-files" value="monar-no-face">monar-no-face<img src="./asset/image/monacoin/png/64/monar-no-face.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="monar-transparent">monar-transparent<img src="./asset/image/monacoin/png/64/monar-transparent.png" width="32" heigth="32"></label>
 -->
-<label><input type="checkbox" name="img-files" value="coin-mark-black" checked><img src="./asset/image/monacoin/png/64/coin-mark-black.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="coin-mark" checked><img src="./asset/image/monacoin/png/64/coin-mark.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="coin-monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/coin-monar-mouth-red.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="coin-monar" checked><img src="./asset/image/monacoin/png/64/coin-monar.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="coin-mini-monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/coin-mini-monar-mouth-red.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="coin-mini-monar" checked><img src="./asset/image/monacoin/png/64/coin-mini-monar.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="mark-outline" checked><img src="./asset/image/monacoin/png/64/mark-outline.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="mark" checked><img src="./asset/image/monacoin/png/64/mark.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="monar-mark-white" checked><img src="./asset/image/monacoin/png/64/monar-mark-white.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="monar-mark" checked><img src="./asset/image/monacoin/png/64/monar-mark.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/monar-mouth-red.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="monar-no-face" checked><img src="./asset/image/monacoin/png/64/monar-no-face.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="monar-transparent" checked><img src="./asset/image/monacoin/png/64/monar-transparent.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="monar" checked><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="coin-mark-black" checked><img src="./asset/image/monacoin/png/64/coin-mark-black.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="coin-mark" checked><img src="./asset/image/monacoin/png/64/coin-mark.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="coin-monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/coin-monar-mouth-red.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="coin-monar" checked><img src="./asset/image/monacoin/png/64/coin-monar.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="coin-mini-monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/coin-mini-monar-mouth-red.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="coin-mini-monar" checked><img src="./asset/image/monacoin/png/64/coin-mini-monar.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="mark-outline" checked><img src="./asset/image/monacoin/png/64/mark-outline.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="mark" checked><img src="./asset/image/monacoin/png/64/mark.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="monar-mark-white" checked><img src="./asset/image/monacoin/png/64/monar-mark-white.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="monar-mark" checked><img src="./asset/image/monacoin/png/64/monar-mark.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/monar-mouth-red.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="monar-no-face" checked><img src="./asset/image/monacoin/png/64/monar-no-face.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="monar-transparent" checked><img src="./asset/image/monacoin/png/64/monar-transparent.png" width="32" heigth="32"></label>
+<label class="checkered-pattern"><input type="checkbox" name="img-files" value="monar" checked><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
 <div id="image-table"></div>
 </fieldset>
 </td></tr>

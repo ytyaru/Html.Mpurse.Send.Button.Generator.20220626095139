@@ -4,12 +4,11 @@ window.addEventListener('DOMContentLoaded', async(event) => {
           .on('stateChanged', async(isUnlocked) => { await init(); console.log(isUnlocked); })
           .on('addressChanged', async(address) => { await init(address); console.log(address); });
     } catch(e) { console.debug(e) }
-
-    await markdown.ready;
-    markdown.parse('# header');
-
     const gen = new MpurseSendButtonGenerator() 
     const downloader = new ZipDownloader()
+    const imgSz = new ImageFileSize()
+    await imgSz.setup()
+    
     document.getElementById('get-address').addEventListener('click', async(event) => {
         document.getElementById('to').value = await window.mpurse.getAddress()
         await gen.generate()
@@ -29,7 +28,7 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     document.getElementById('ok').addEventListener('input', async(event) => { await gen.generate() })
     document.getElementById('cancel').addEventListener('input', async(event) => { await gen.generate() })
     for (const ui of document.querySelectorAll(`input[type=radio][name=party]`)) { ui.addEventListener('change', async(event) => { await gen.generate() }) }
-    for (const ui of document.querySelectorAll(`input[type=radio][name=format]`)) { ui.addEventListener('input', async(event) => { await gen.generate() }) }
+    for (const ui of document.querySelectorAll(`input[type=radio][name=format]`)) { ui.addEventListener('input', async(event) => {  await gen.generate() }) }
     //for (const ui of document.querySelectorAll(`input[type=radio][name=format]`)) { ui.addEventListener('change', async(event) => { await gen.generate() }) }
     document.getElementById('src-id').addEventListener('change', async(event) => { await gen.generate() })
 
@@ -146,8 +145,15 @@ window.addEventListener('DOMContentLoaded', async(event) => {
         PartySparkleImage.setup(format, size)
         gen.generate()
     })
+
+    for (const ui of document.querySelectorAll(`input[type=radio][name=img-format]`)) { ui.addEventListener('input', async(event) => { imgSz.show(); }) }
+    document.getElementById('img-file-sizes').addEventListener('change', async(event) => {
+        imgSz.show();
+    })
+    for (const ui of document.querySelectorAll(`input[type=checkbox][name=img-files]`)) { ui.addEventListener('input', async(event) => { imgSz.show(); }) }
+
     const table = new ImageTableHorizon() 
-    document.getElementById('image-table').innerHTML = await table.make()
+    document.getElementById('image-table').innerHTML = await table.make(imgSz.Tsvs)
     /*
     document.getElementById('get-transaction').addEventListener('click', async(event) => {
         const address = document.getElementById('address').value
@@ -258,5 +264,6 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     PartySparkleImage.setup()
     //await gen.generate()
     document.getElementById('get-address').dispatchEvent(new Event('click'))
+    imgSz.show();
 });
 
