@@ -66,13 +66,13 @@
 
 値|意味
 ---|----
-`no`,`none`,`off`|アニメなし
-`confetti`,`confetti-square`|クラッカー（デフォルト）
+`no`, `none`, `off`|アニメなし
+`confetti`, `confetti-square`|クラッカー（デフォルト）
 `confetti-star`|クラッカー（★）
 `confetti-hart`|クラッカー（♥）
 `confetti-img`|クラッカー（`party-src-id`,`party-size`で指定した画像）
 `confetti-mix`|クラッカー（★♥指定画像の混合）
-`sparkle`,`sparkle-star`|飛び散る（★）
+`sparkle`, `sparkle-star`|飛び散る（★）
 `sparkle-hart`|飛び散る（♥）
 `sparkle-img`|飛び散る（`party-src`,`party-src-id`,`party-size`で指定した画像）
 
@@ -84,5 +84,5 @@
 
 #### 他
 
-　詳しくはHTMLソースコードをご覧ください。
+　これより詳しくはソースコードをご覧ください。
 

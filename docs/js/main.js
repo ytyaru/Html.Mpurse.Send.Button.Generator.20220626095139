@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     } catch(e) { console.debug(e) }
     Loading.setup()
     //Loading.show()
+    document.getElementById('amount').focus()
     const gen = new MpurseSendButtonGenerator() 
     const downloader = new ZipDownloader()
     const imgSz = new ImageFileSize()

@@ -27,13 +27,11 @@ class MpurseSendButton extends HTMLElement {
         else if ('party-size' === property || 'format' === property) {
             if (PartySparkleImage) { PartySparkleImage.setup(this.format, this.partySize) }
         }
-        console.debug(property, name, value)
     }
     async connectedCallback() {
         const shadow = this.attachShadow({ mode: 'open' }); // マウスイベント登録に必要だった。CSS的にはclosedにしたいのに。
         const button = await this.#make()
         await this.#makeClickEvent()
-        console.debug(button.innerHTML)
         shadow.innerHTML = `<style>${this.#cssBase()}${this.#cssAnimation()}</style>${button.outerHTML}` 
         this.shadowRoot.querySelector('img,object').addEventListener('animationend', (e)=>{ e.target.classList.remove('jump'); }, false);
     }
@@ -81,8 +79,6 @@ class MpurseSendButton extends HTMLElement {
         return a
     }
     #makeImgObj() {
-        console.debug(this.src)
-        console.debug(this.format)
         if (this.src) {
             if (this.src.endsWith('svg')) { return this.#makeSendButtonObject() }
             return this.#makeSendButtonImg()
@@ -103,7 +99,6 @@ class MpurseSendButton extends HTMLElement {
         img.setAttribute('height', `${this.size}`)
         img.setAttribute('src', `${this.#getImgSrc()}`)
         img.setAttribute('alt', `${this.alt}`)
-        console.debug(this.size, this.src)
         return img
     }
     // https://qiita.com/manabuyasuda/items/01a76204f97cd73ffc4e#object%E3%82%BF%E3%82%B0%E3%81%A7%E3%83%95%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF%E3%81%99%E3%82%8B
@@ -124,7 +119,6 @@ class MpurseSendButton extends HTMLElement {
     }
     #getImgSrc() {
         if (this.src) { return this.src }
-        console.debug(this.size, `${this.baseUrl}${this.format}${('svg'==this.format) ? '' : '/' + ((64 < this.size) ? 256 : 64)}/${this.srcId}.${this.format}`)
         return `${this.baseUrl}${this.format}${('svg'==this.format) ? '' : '/' + ((64 < this.size) ? 256 : 64)}/${this.srcId}.${this.format}`
     }
     async #makeClickEvent() {
@@ -135,14 +129,11 @@ class MpurseSendButton extends HTMLElement {
         const memo = this.memo
         this.addEventListener('pointerdown', async(event) => {
             console.debug(`クリックしました。\n宛先：${to}\n金額：${amount} ${asset}\nメモ：${memo}`)
-            console.debug(event.target)
             event.target.shadowRoot.querySelector('img,object').classList.add('jump')
             //this.#party()
             const txHash = await window.mpurse.sendAsset(to, asset, amount, memoType, memo).catch((e) => null);
-            console.debug(txHash)
             if (!txHash) { Toaster.toast(this.cancel); }
             else {
-                console.debug(txHash)
                 console.debug(`送金しました。\ntxHash: ${txHash}\n宛先：${to}\n金額：${amount} ${asset}\nメモ：${memo}`)
                 this.#party()
                 Toaster.toast(this.okMsg);
@@ -194,12 +185,7 @@ class MpurseSendButton extends HTMLElement {
         return `${this.baseUrl}${this.format}${('svg'==this.format) ? '' : '/' + ((64 < this.size) ? 256 : 64)}/${this.partySrcId}.${this.format}`
     }
 }
-/*
 window.addEventListener('DOMContentLoaded', (event) => {
-    customElements.define('mpurse-send-button', MpurseSendButton);
-});
-*/
-window.addEventListener('load', (event) => {
     customElements.define('mpurse-send-button', MpurseSendButton);
 });
 

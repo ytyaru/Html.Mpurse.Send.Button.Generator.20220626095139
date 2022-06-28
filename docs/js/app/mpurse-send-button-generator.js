@@ -13,7 +13,10 @@ class MpurseSendButtonGenerator {
     async #export(button) {
         document.getElementById('export').innerHTML = button
         const js = await this.getScript()
-        document.getElementById('export-code').value = js + button
+        //document.getElementById('export-code').value = js + button
+        document.getElementById('export-code').value = `<script>
+${js}</script>
+${button}` 
     }
     makeMpurseSendButton() {
         const attrs = []

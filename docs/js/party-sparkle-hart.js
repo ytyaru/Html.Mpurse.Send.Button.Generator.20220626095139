@@ -1,7 +1,7 @@
 class PartySparkleHart {
     static setup() {
         party.resolvableShapes['hart'] = this.svg().outerHTML
-        console.debug(party.resolvableShapes['hart'])
+        //console.debug(party.resolvableShapes['hart'])
     }
     static svg() { 
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
