@@ -10,7 +10,6 @@ class MpurseSendButton extends HTMLElement {
         if (!this.baseUrl.endsWith('/')) { this.baseUrl += '/' }
         if (PartySparkleHart) { PartySparkleHart.setup() }
         if (PartySparkleImage) { PartySparkleImage.setup(this.format, this.partySize) }
-        connectedCallback()
     }
     static get observedAttributes() {
         return ['to', 'asset', 'amount', 'memo', 'src', 'size', 'title', 'ok', 'cancel', 'src-id', 'base-url', 'format', 'party', 'party-src', 'party-src-id', 'party-size'];
@@ -35,7 +34,7 @@ class MpurseSendButton extends HTMLElement {
         const button = await this.#make()
         await this.#makeClickEvent()
         console.debug(button.innerHTML)
-        shadow.innerHTML = `<style>${this.#cssBase()}${this.#cssAnimation()}</style>${button.innerHTML}` 
+        shadow.innerHTML = `<style>${this.#cssBase()}${this.#cssAnimation()}</style>${button.outerHTML}` 
         this.shadowRoot.querySelector('img,object').addEventListener('animationend', (e)=>{ e.target.classList.remove('jump'); }, false);
     }
     #cssBase() { return `a{display:inline-block;cursor:pointer;}object{pointer-events:none;}img,object{text-align:center; vertical-align:middle; user-select:none;}` }

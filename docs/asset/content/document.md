@@ -4,6 +4,8 @@
 
 [Mpurse]:https://github.com/tadajam/mpurse
 
+//-----mpurse-send-button-----//
+
 ## 作成元
 
 　これは[Mpurseを使ったモナコイン送金ボタンを生成する][]で作成されました。
@@ -18,9 +20,22 @@
 
 　このボタンで投げモナするにはHTTPSサーバにアップする必要があります。[Mpurse][] APIの仕様です。
 
+　LinuxでPythonがあるなら`server.sh`を実行するとローカルでHTTPSサーバが起動します。その後、ブラウザで`https://localhost/`にアクセスすると動作確認できます。サーバを終了するときは端末で<kbd>CTRL</kbd>+<kbd>C</kbd>します。
+
 ### タグ
 
 　`<mpurse-send-button>`タグで投げモナボタンを作れます。
+
+```html
+<mpurse-send-button></mpurse-send-button>
+```
+```html
+<mpurse-send-button
+ to="MEHCqJbgiNERCH3bRAtNSSD9uxPViEX1nu"
+ amount="0.114114"
+ src-id="coin-monar"
+></mpurse-send-button>
+```
 
 属性|意味|例|補足
 ----|----|---|----

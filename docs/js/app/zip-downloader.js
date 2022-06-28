@@ -21,7 +21,6 @@ class ZipDownloader {
         const head = `<head><meta charset="UTF-8"><title>投げモナボタン</title>${this.#makeLoad()}</head>`
         const docs = await this.#makeNote()
         const body = `<body>
-${this.#makeMpurseSendButtons()}
 ${docs}
 </body>`
         const html = `<!DOCTYPE html>
@@ -110,61 +109,61 @@ ${body}`
         const simple = `<mpurse-send-button></mpurse-send-button>`
         const fullAttrs = new MpurseSendButtonGenerator().makeMpurseSendButton()
         return `${simple}${fullAttrs}`
-        /*
-        return this.#makeButton() + '<br>'
-                + this.#makeButtonTo() + '<br>'
-                + this.#makeButtonToImg('coin-mark') + ''
-                + this.#makeButtonToImg('coin-monar') + ''
-                + this.#makeButtonToImg('monar-mark') + ''
-                + this.#makeButtonToImgSize('coin-mark', 256) + ''
-                + this.#makeButtonToImgSize('coin-monar', 256) + ''
-                + this.#makeButtonToImgSize('monar-mark', 256) + ''
-        */
     }
-    #makeButton() {
-        const attrs = []       
-        for (const id of ['to', 'asset', 'amount', 'memo', 'img-src', 'img-size', 'title', 'ok-msg', 'ng-msg']) {
-            const value = document.getElementById(id).value
-            if (value) { attrs.push(`${id}="${value}"`) }
-        }
-        if (!document.getElementById(`img-src`).value) {
-            const img = document.querySelector(`input[name="img"][checked]`)
-            attrs.push(`img="${img.id.split('-').slice(0,-1).join('-')}"`)
-        }
-        return `<mpurse-send-button ${attrs.join(' ')}></mpurse-send-button>`
-    }
+    /*
     #makeButtonTo() { return `<mpurse-send-button to="${document.getElementById('to').value}"></mpurse-send-button>` }
     #makeButtonToImg(img) { return `<mpurse-send-button to="${document.getElementById('to').value}" img="${img}"></mpurse-send-button>` }
     #makeButtonToImgSize(img,size) { return `<mpurse-send-button to="${document.getElementById('to').value}" img="${img}" img-size="${size}"></mpurse-send-button>` }
+    */
     async #makeNote() {
         const res = await fetch(`/asset/content/document.md`)
         console.debug(res)
-        const md = await res.text()
-        md.replace('//-----inner-img-table-----//', '')
+        let md = await res.text()
+        const table = this.#makeInnerImageTable()
+        console.debug(table)
+        md = md.replace('//-----inner-img-table-----//', table)
+        md = md.replace('//-----mpurse-send-button-----//', this.#makeMpurseSendButtons())
         console.debug(md)
         await markdown.ready;
         return markdown.parse(md);
     }
-    /*
-    makeInnerImageTable() {
-        const th = `<th><code>src-id</code></th><th>画像</th></tr>`
-        const ths = []
-
+    #makeInnerImageTable() {
         const base = document.getElementById(`base-url`).value.split('/').filter(v=>v).filter(v=>'.'!==v && '..'!==v).join('/')
-        const files = Array.prototype.slice.call(document.querySelectorAll(`input[type=radio][name=img-files]`)).filter(e=>e.checked).value
+        const files = Array.prototype.slice.call(document.querySelectorAll(`input[type=checkbox][name=img-files]`)).filter(e=>e.checked).map(e=>e.value)
         const formats = Array.prototype.slice.call(document.querySelectorAll(`input[type=radio][name=img-format]`)).filter(e=>e.checked)[0].value.split(',')
         const sizes = document.querySelector(`#img-file-sizes`).value.split(',')
-                ths.push(('svg'===format) ? format : )
+
+        const ths = [`<th><code>src-id</code></th>`]
         for (const format of formats) {
-            for (const size of sizes) {
-                for (const file of files) {
-                    const hasSizeDir = ('svg'===format) ? false : true
-                    const paths = sizes.map(size=>`${base}/${format}/${(hasSizeDir) ? size+"/" : ''}${file}.${format}`)
-                    tds.push()
+            if ('svg'===format) { ths.push(`<th>${format}</th>`) }
+            else {
+                for (const size of sizes) {
+                    ths.push(`<th>${format} ${size}</th>`) 
                 }
             }
         }
+        const trs = []
+        for (const file of files) {
+            const tds = [`<th>${file}</th>`]
+            for (const format of formats) {
+                const hasSizeDir = ('svg'===format) ? false : true
+                if (hasSizeDir) {
+                    for (const size of sizes) {
+                        const path = `${base}/${format}/${size}/${file}.${format}`
+                        //tds.push(`<td><img src="${path}" width="64" height="64"></td>`)
+                        tds.push(`<td><mpurse-send-button format="${format}" src-id="${file}" size="64"></mpurse-send-button></td>`)
+                    }
+                } else {
+                    const path = `${base}/${format}/${file}.${format}`
+                    //tds.push(`<td><object type="image/svg+xml" data="${path}" width="64" height="64"></object></td>`)
+                    tds.push(`<td><mpurse-send-button format="${format}" src-id="${file}" size="64"></mpurse-send-button></td>`)
+                }
+            }
+            trs.push(`<tr>${tds.join('')}</tr>`)
+        }
+        return `<table><tr>${ths.join('')}</tr>${trs.join('')}<table>`
     }
+    /*
     */
     /*
     #makeNote() { return `<h1>投げモナボタン</h1>
