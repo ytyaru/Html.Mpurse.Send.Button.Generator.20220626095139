@@ -4,7 +4,12 @@ window.addEventListener('DOMContentLoaded', async(event) => {
           .on('stateChanged', async(isUnlocked) => { await init(); console.log(isUnlocked); })
           .on('addressChanged', async(address) => { await init(address); console.log(address); });
     } catch(e) { console.debug(e) }
+
+    await markdown.ready;
+    markdown.parse('# header');
+
     const gen = new MpurseSendButtonGenerator() 
+    const downloader = new ZipDownloader()
     document.getElementById('get-address').addEventListener('click', async(event) => {
         document.getElementById('to').value = await window.mpurse.getAddress()
         await gen.generate()
@@ -30,8 +35,11 @@ window.addEventListener('DOMContentLoaded', async(event) => {
 
     document.getElementById('copy-to-clipboard').addEventListener('click', async(event) => { await gen.copy() })
     document.getElementById('download-zip').addEventListener('click', async(event) => {
+        await downloader.download() 
+        /*
         const selectedImgId = (document.getElementById('img-src').value) ? null : [...document.querySelectorAll(`input[type="radio"][name="img"]`)].filter(input=>input.checked)[0].id
         await zip.download(selectedImgId)
+        */
     })
 
     document.getElementById('party-confetti').addEventListener('click', async(event) => {
@@ -239,5 +247,7 @@ window.addEventListener('DOMContentLoaded', async(event) => {
 
     PartySparkleHart.setup()
     PartySparkleImage.setup()
+    //await gen.generate()
+    document.getElementById('get-address').dispatchEvent(new Event('click'))
 });
 

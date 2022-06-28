@@ -8,14 +8,14 @@ class MpurseSendButtonGenerator {
         catch(e) { Toaster.toast('クリップボードのコピーに失敗しました……。', true) }
     }
     async generate() {
-        await this.#export(this.#makeMpurseSendButton())
+        await this.#export(this.makeMpurseSendButton())
     }
     async #export(button) {
         document.getElementById('export').innerHTML = button
-        const js = await this.#getScript()
+        const js = await this.getScript()
         document.getElementById('export-code').value = js + button
     }
-    #makeMpurseSendButton() {
+    makeMpurseSendButton() {
         const attrs = []
         for (const name of ['format', 'party']) {
             const value = Array.prototype.slice.call(document.querySelectorAll(`input[type=radio][name=${name}]`)).filter(e=>e.checked)[0].value
@@ -32,7 +32,7 @@ class MpurseSendButtonGenerator {
         }
         return `<mpurse-send-button ${attrs.join(' ')}></mpurse-send-button>`
     }
-    async #getScript() {
+    async getScript() {
         const res = await fetch('./js/app/mpurse-send-button.js.tpl')
         const js = await res.text()
         const code = this.#setInitValues()

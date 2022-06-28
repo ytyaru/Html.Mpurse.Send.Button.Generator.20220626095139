@@ -10,11 +10,13 @@ class MpurseSendButton extends HTMLElement {
         if (!this.baseUrl.endsWith('/')) { this.baseUrl += '/' }
         if (PartySparkleHart) { PartySparkleHart.setup() }
         if (PartySparkleImage) { PartySparkleImage.setup(this.format, this.partySize) }
+        connectedCallback()
     }
     static get observedAttributes() {
         return ['to', 'asset', 'amount', 'memo', 'src', 'size', 'title', 'ok', 'cancel', 'src-id', 'base-url', 'format', 'party', 'party-src', 'party-src-id', 'party-size'];
     }
     attributeChangedCallback(property, oldValue, newValue) {
+        if (oldValue === newValue) { return; }
         const isChainCase = property.includes('-')
         const nums = ['size', 'party-size']
         const name = (isChainCase) ? property.split('-').map((s,i)=>(0===i) ? s.toLowerCase() : s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()).join('') : property
@@ -34,9 +36,9 @@ class MpurseSendButton extends HTMLElement {
         await this.#makeClickEvent()
         console.debug(button.innerHTML)
         shadow.innerHTML = `<style>${this.#cssBase()}${this.#cssAnimation()}</style>${button.innerHTML}` 
-        this.shadowRoot.querySelector('img').addEventListener('animationend', (e)=>{ e.target.classList.remove('jump'); }, false);
+        this.shadowRoot.querySelector('img,object').addEventListener('animationend', (e)=>{ e.target.classList.remove('jump'); }, false);
     }
-    #cssBase() { return `img{cursor:pointer; text-align:center; vertical-align:middle; user-select:none;}` }
+    #cssBase() { return `a{display:inline-block;cursor:pointer;}object{pointer-events:none;}img,object{text-align:center; vertical-align:middle; user-select:none;}` }
     #cssAnimation() { return `
 @keyframes jump {
   from {
@@ -75,9 +77,21 @@ class MpurseSendButton extends HTMLElement {
     }
     async #make() {
         const a = await this.#makeSendButtonA()
-        const img = this.#makeSendButtonImg()
+        const img = this.#makeImgObj()
         a.appendChild(img)
         return a
+    }
+    #makeImgObj() {
+        console.debug(this.src)
+        console.debug(this.format)
+        if (this.src) {
+            if (this.src.endsWith('svg')) { return this.#makeSendButtonObject() }
+            return this.#makeSendButtonImg()
+        }
+        if (this.format) {
+            if ('svg'===this.format) { return this.#makeSendButtonObject() }
+        }
+        return this.#makeSendButtonImg()
     }
     #makeSendButtonA() {
         const a = document.createElement('a')
@@ -89,8 +103,25 @@ class MpurseSendButton extends HTMLElement {
         img.setAttribute('width', `${this.size}`)
         img.setAttribute('height', `${this.size}`)
         img.setAttribute('src', `${this.#getImgSrc()}`)
+        img.setAttribute('alt', `${this.alt}`)
         console.debug(this.size, this.src)
         return img
+    }
+    // https://qiita.com/manabuyasuda/items/01a76204f97cd73ffc4e#object%E3%82%BF%E3%82%B0%E3%81%A7%E3%83%95%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF%E3%81%99%E3%82%8B
+    #makeSendButtonObject() { // SVG内のCSSを有効化するためにはimgでなくobjectを使う必要がある
+        const object = document.createElement('object')
+        object.setAttribute('type', `image/svg+xml`)
+        object.setAttribute('data', `${this.#getImgSrc()}`)
+        object.setAttribute('width', `${this.size}`)
+        object.setAttribute('height', `${this.size}`)
+        // PNGでフォールバックする（SVGが表示できなければPNGで表示する）
+        const png = document.createElement('object')
+        png.setAttribute('type', `image/png`)
+        png.setAttribute('data', `${this.baseUrl}png/${((64 < this.size) ? 256 : 64)}/${this.srcId}.png`)
+        png.setAttribute('width', `${this.size}`)
+        png.setAttribute('height', `${this.size}`)
+        object.appendChild(png)
+        return object
     }
     #getImgSrc() {
         if (this.src) { return this.src }
@@ -98,7 +129,7 @@ class MpurseSendButton extends HTMLElement {
         return `${this.baseUrl}${this.format}${('svg'==this.format) ? '' : '/' + ((64 < this.size) ? 256 : 64)}/${this.srcId}.${this.format}`
     }
     async #makeClickEvent() {
-        const to = this.to || await window.mpurse.getAddress()
+        const to = this.to
         const asset = this.asset
         const amount = Number(this.amount)
         const memoType = (this.memo) ? 'plain' : 'no' // 'no', 'hex', 'plain'
@@ -106,7 +137,7 @@ class MpurseSendButton extends HTMLElement {
         this.addEventListener('pointerdown', async(event) => {
             console.debug(`クリックしました。\n宛先：${to}\n金額：${amount} ${asset}\nメモ：${memo}`)
             console.debug(event.target)
-            event.target.shadowRoot.querySelector('img').classList.add('jump')
+            event.target.shadowRoot.querySelector('img,object').classList.add('jump')
             //this.#party()
             const txHash = await window.mpurse.sendAsset(to, asset, amount, memoType, memo).catch((e) => null);
             console.debug(txHash)
@@ -123,6 +154,10 @@ class MpurseSendButton extends HTMLElement {
         if (!party) { return }
         const target = this.shadowRoot.querySelector('img')
         switch(this.party) {
+            case 'no':
+            case 'none':
+            case 'off': break;
+            case 'on':
             case 'confetti':
             case 'confetti-square':
                 this.#confetti(target, ['square']); break;
@@ -143,9 +178,8 @@ class MpurseSendButton extends HTMLElement {
                     //size: party.variation.range(1, 3),
                 }); break;
             case 'sparkle-hart': PartySparkleHart.animate(target); break;
-            //case 'sparkle-img': PartySparkleImage.animate(target, {src:this.partySrc || this.src, size:this.size}); break;
             case 'sparkle-img': PartySparkleImage.animate(target, {src:this.#getPartySrcUrl() || this.src, size:this.partySize}); break;
-            default: break;
+            default: this.#confetti(target, ['square']); break;
         }
     }
     #confetti(target, shapes) {
@@ -158,11 +192,15 @@ class MpurseSendButton extends HTMLElement {
     }
     #getPartySrcUrl() {
         if(this.partySrc) { return this.partySrc }
-        //const url = `./asset/image/monacoin/${format}${('png'==format) ? '/' + ((64 < size) ? 256 : 64) : ''}/${kind}.${format}`
         return `${this.baseUrl}${this.format}${('svg'==this.format) ? '' : '/' + ((64 < this.size) ? 256 : 64)}/${this.partySrcId}.${this.format}`
     }
 }
+/*
 window.addEventListener('DOMContentLoaded', (event) => {
+    customElements.define('mpurse-send-button', MpurseSendButton);
+});
+*/
+window.addEventListener('load', (event) => {
     customElements.define('mpurse-send-button', MpurseSendButton);
 });
 

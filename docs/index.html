@@ -69,14 +69,17 @@
 
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/tippy.js@6"></script>
-<script src="./lib/tingle/0.16.0/tingle.js"></script>
+<script src="lib/tingle/0.16.0/tingle.js"></script>
 <link rel="stylesheet" href="./lib/tingle/0.16.0/tingle.css">
+<!--<script src='https://cdn.jsdelivr.net/gh/rsms/markdown-wasm@v1.1.2/dist/markdown.js'></script>-->
+<script src='lib/markdown-wasm/1.2.0/markdown.js'></script>
 <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">-->
 <link rel="stylesheet" type="text/css" href="./lib/toastify/1.11.2/min.css">
 <!--<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>-->
-<script type="text/javascript" src="./lib/toastify/1.11.2/min.js"></script>
-<script src="js/toaster.js"></script>
+<script src="lib/toastify/1.11.2/min.js"></script>
 <script src="lib/party/party.min.js"></script>
+<script src="lib/jszip/3.9.1/min.js"></script>
+<script src="js/toaster.js"></script>
 <script src="js/rest-client.js"></script>
 <script src="js/misskey-rest-client.js"></script>
 <script src="js/misskey-instance.js"></script>
@@ -116,6 +119,7 @@
 <script src="js/image-table-horizon.js"></script>
 
 <script src="js/app/mpurse-send-button-generator.js"></script>
+<script src="js/app/zip-downloader.js"></script>
 
 <script src="js/main.js"></script>
 </head>
@@ -229,7 +233,7 @@
 <fieldset><legend>形式</legend>
 <label><input type="radio" value="png" name="img-format">PNG</label>
 <label><input type="radio" value="svg" name="img-format">SVG</label>
-<label title="SVGで表示しPNGをフォールバックにする"><input type="radio" value="svg_png" name="img-format" checked>SVG+PNG</label>
+<label title="SVGで表示しPNGをフォールバックにする"><input type="radio" value="svg,png" name="img-format" checked>SVG+PNG</label>
 </fieldset>
 <fieldset><legend>デフォルト</legend>
 <input id="base-url" value="./asset/image/monacoin/" type="text" placeholder="画像ベースURL">
@@ -286,17 +290,18 @@
 -->
 <label><input type="checkbox" name="img-files" value="coin-mark-black" checked><img src="./asset/image/monacoin/png/64/coin-mark-black.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="coin-mark" checked><img src="./asset/image/monacoin/png/64/coin-mark.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="mark" checked><img src="./asset/image/monacoin/png/64/mark.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="coin-monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/coin-monar-mouth-red.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="coin-monar" checked><img src="./asset/image/monacoin/png/64/coin-monar.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="coin-mini-monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/coin-mini-monar-mouth-red.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="coin-mini-monar" checked><img src="./asset/image/monacoin/png/64/coin-mini-monar.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="monar-mark" checked><img src="./asset/image/monacoin/png/64/monar-mark.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="mark-outline" checked><img src="./asset/image/monacoin/png/64/mark-outline.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="mark" checked><img src="./asset/image/monacoin/png/64/mark.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="monar-mark-white" checked><img src="./asset/image/monacoin/png/64/monar-mark-white.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar-mark" checked><img src="./asset/image/monacoin/png/64/monar-mark.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="monar-mouth-red" checked><img src="./asset/image/monacoin/png/64/monar-mouth-red.png" width="32" heigth="32"></label>
-<label><input type="checkbox" name="img-files" value="monar" checked><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="monar-no-face" checked><img src="./asset/image/monacoin/png/64/monar-no-face.png" width="32" heigth="32"></label>
 <label><input type="checkbox" name="img-files" value="monar-transparent" checked><img src="./asset/image/monacoin/png/64/monar-transparent.png" width="32" heigth="32"></label>
+<label><input type="checkbox" name="img-files" value="monar" checked><img src="./asset/image/monacoin/png/64/monar.png" width="32" heigth="32"></label>
 <div id="image-table"></div>
 </fieldset>
 </td></tr>

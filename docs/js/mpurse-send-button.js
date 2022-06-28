@@ -151,7 +151,8 @@ class MpurseSendButton extends HTMLElement {
         return `${this.baseUrl}${this.format}${('svg'==this.format) ? '' : '/' + ((64 < this.size) ? 256 : 64)}/${this.srcId}.${this.format}`
     }
     async #makeClickEvent() {
-        const to = this.to || await window.mpurse.getAddress()
+        //const to = this.to
+        const to = this.to
         const asset = this.asset
         const amount = Number(this.amount)
         const memoType = (this.memo) ? 'plain' : 'no' // 'no', 'hex', 'plain'
@@ -176,6 +177,10 @@ class MpurseSendButton extends HTMLElement {
         if (!party) { return }
         const target = this.shadowRoot.querySelector('img')
         switch(this.party) {
+            case 'no':
+            case 'none':
+            case 'off': break;
+            case 'on':
             case 'confetti':
             case 'confetti-square':
                 this.#confetti(target, ['square']); break;
@@ -196,9 +201,8 @@ class MpurseSendButton extends HTMLElement {
                     //size: party.variation.range(1, 3),
                 }); break;
             case 'sparkle-hart': PartySparkleHart.animate(target); break;
-            //case 'sparkle-img': PartySparkleImage.animate(target, {src:this.partySrc || this.src, size:this.size}); break;
             case 'sparkle-img': PartySparkleImage.animate(target, {src:this.#getPartySrcUrl() || this.src, size:this.partySize}); break;
-            default: break;
+            default: this.#confetti(target, ['square']); break;
         }
     }
     #confetti(target, shapes) {
