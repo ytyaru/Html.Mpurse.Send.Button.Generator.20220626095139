@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     document.getElementById('ok').addEventListener('input', async(event) => { await gen.generate() })
     document.getElementById('cancel').addEventListener('input', async(event) => { await gen.generate() })
     for (const ui of document.querySelectorAll(`input[type=radio][name=party]`)) { ui.addEventListener('change', async(event) => { await gen.generate() }) }
-    for (const ui of document.querySelectorAll(`input[type=radio][name=format]`)) { ui.addEventListener('input', async(event) => { console.debug(event.target.value); await gen.generate() }) }
+    for (const ui of document.querySelectorAll(`input[type=radio][name=format]`)) { ui.addEventListener('input', async(event) => { await gen.generate() }) }
     //for (const ui of document.querySelectorAll(`input[type=radio][name=format]`)) { ui.addEventListener('change', async(event) => { await gen.generate() }) }
     document.getElementById('src-id').addEventListener('change', async(event) => { await gen.generate() })
 
@@ -43,7 +43,6 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     })
 
     document.getElementById('party-confetti').addEventListener('click', async(event) => {
-        console.debug(party)
         party.confetti(event.target,{
             lifetime: party.variation.range(5, 7),
             count: party.variation.range(80, 100),
@@ -54,7 +53,6 @@ window.addEventListener('DOMContentLoaded', async(event) => {
         gen.generate()
     })
     document.getElementById('party-confetti-star').addEventListener('click', async(event) => {
-        console.debug(party)
         party.confetti(event.target,{
             shapes: ['star'],
             lifetime: party.variation.range(5, 7),
@@ -65,7 +63,6 @@ window.addEventListener('DOMContentLoaded', async(event) => {
         gen.generate()
     })
     document.getElementById('party-confetti-hart').addEventListener('click', async(event) => {
-        console.debug(party)
         party.confetti(event.target,{
             shapes: ['hart'],
             lifetime: party.variation.range(5, 7),
@@ -76,7 +73,6 @@ window.addEventListener('DOMContentLoaded', async(event) => {
         gen.generate()
     })
     document.getElementById('party-confetti-img').addEventListener('click', async(event) => {
-        console.debug(party)
         party.confetti(event.target,{
             shapes: [document.getElementById('party-src-id').value],
             lifetime: party.variation.range(5, 7),
@@ -87,7 +83,6 @@ window.addEventListener('DOMContentLoaded', async(event) => {
         gen.generate()
     })
     document.getElementById('party-confetti-mix').addEventListener('click', async(event) => {
-        console.debug(party)
         party.confetti(event.target,{
             shapes: ['square', 'hart', document.getElementById('party-src-id').value],
             lifetime: party.variation.range(5, 7),
@@ -99,7 +94,6 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     })
 
     document.getElementById('party-sparkle-star').addEventListener('click', async(event) => {
-        console.debug(party)
         party.sparkles(event.target,{
             lifetime: party.variation.range(2, 3),
             count: party.variation.range(30, 40),
@@ -113,21 +107,36 @@ window.addEventListener('DOMContentLoaded', async(event) => {
         document.querySelector(`input[type=radio][name=party][value=sparkle-hart]`).checked = true
         gen.generate()
     })
+    document.getElementById('party-src').addEventListener('change', async(event) => {
+        if (event.target.value) {
+            document.querySelector(`input[type=radio][name=party][value=sparkle-image] + img`).setAttribute('src', event.target.value)
+            document.querySelector(`#party-sparkle-img > img`).setAttribute('src', event.target.value)
+        } else {
+            const id = document.getElementById('party-src-id').value
+            document.querySelector(`#party-sparkle-img > img`).setAttribute('src', `./asset/image/monacoin/png/64/${id}.png`)
+            document.querySelector(`input[type=radio][name=party][value=sparkle-image] + img`).setAttribute('src', `./asset/image/monacoin/png/64/${id}.png`)
+        }
+    })
     document.getElementById('party-src-id').addEventListener('change', async(event) => {
         document.querySelector(`#party-confetti-img > img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
-        document.querySelector(`#party-sparkle-img > img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
         document.querySelector(`input[type=radio][name=party][value=confetti-image] + img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
-        document.querySelector(`input[type=radio][name=party][value=sparkle-image] + img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
+        if (!document.getElementById('party-src').value) {
+            document.querySelector(`#party-sparkle-img > img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
+            document.querySelector(`input[type=radio][name=party][value=sparkle-image] + img`).setAttribute('src', `./asset/image/monacoin/png/64/${event.target.value}.png`)
+        }
         gen.generate()
     })
     document.getElementById('party-sparkle-img').addEventListener('click', async(event) => {
-        const id = document.getElementById('party-src-id').value
-        const format = document.querySelector(`input[name=format][checked]`).value
+        const src = document.getElementById('party-src').value
+        let url = src
         const size = document.getElementById('party-size').value
-        const url = `./asset/image/monacoin/${format}${('png'==format) ? '/' + ((64 < size) ? 256 : 64) : ''}/${id}.${format}`
-        console.debug(id, format, size, url)
-        PartySparkleImage.animate(event.target, {src:url, size:size}) 
+        if (!url) {
+            const id = document.getElementById('party-src-id').value
+            const format = document.querySelector(`input[name=format][checked]`).value
+            url = `./asset/image/monacoin/${format}${('png'==format) ? '/' + ((64 < size) ? 256 : 64) : ''}/${id}.${format}`
+        }
         document.querySelector(`input[type=radio][name=party][value=sparkle-image]`).checked = true
+        PartySparkleImage.animate(event.target, {src:url, size:size}) 
         gen.generate()
     })
     document.getElementById('party-size').addEventListener('change', async(event) => {
